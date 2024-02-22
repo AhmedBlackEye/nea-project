@@ -1,8 +1,7 @@
-"use server"
+"use server";
 
-import { db } from "@drizzle/db"
-
+import { db } from "../drizzle/db";
 
 function getUsers() {
-    db.query
+  db.query;
 }
