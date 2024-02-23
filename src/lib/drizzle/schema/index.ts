@@ -1,4 +1,4 @@
-export { users } from "./users";
+export { users, userRelations } from "./users";
 export { campaigns, campaignsRelations } from "./campaigns";
 export { invitation, invitationRelations } from "./invitation";
 export { notification, notificationRelations } from "./notification";

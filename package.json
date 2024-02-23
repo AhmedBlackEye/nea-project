@@ -12,7 +12,8 @@
     "generate": "drizzle-kit generate:pg",
     "drop": "drizzle-kit drop",
     "check": "drizzle-kit check:pg",
-    "up": "drizzle-kit up:pg"
+    "up": "drizzle-kit up:pg",
+    "update-supabase-types": "npx supabase gen types typescript --project-id xtinermkskmcfskzvzle --schema public > src/lib/supabase/types.ts "
   },
   "dependencies": {
     "@supabase/ssr": "^0.1.0",
