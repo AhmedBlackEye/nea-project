@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.39.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.29.3",
     "lucide-react": "^0.334.0",
     "nanoid": "^5.0.6",
