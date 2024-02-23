@@ -19,7 +19,8 @@ export const campaigns = pgTable(
     name: text("name").notNull(),
     description: text("description"),
     analytics: uuid("analytics").references(() => campaignAnalytics.id),
-    widget: text("widget"),
+    widgetContent: text("widget_content"),
+    answers: jsonb("answers"),
     settings: jsonb("settings"),
     endsAt: timestamp("created_at", {
       withTimezone: true,
