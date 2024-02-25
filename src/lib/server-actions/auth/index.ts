@@ -1,11 +1,17 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/drizzle/db";
-import { users } from "@/lib/drizzle/schema";
+// import { eq } from "drizzle-orm";
+// import { db } from "@/lib/drizzle/db";
+// import { users } from "@/lib/drizzle/schema";
 import { createClient } from "@lib/supabase/server";
 
-export async function loginUser(email: string, password: string) {
+type Props = {
+  email: string;
+  password: string;
+};
+
+export async function loginUser({ email, password }: Props) {
+  console.log("recieved", email, password);
   const supabase = createClient();
   const response = await supabase.auth.signInWithPassword({
     email,
@@ -14,7 +20,7 @@ export async function loginUser(email: string, password: string) {
   return response;
 }
 
-export async function signUpUser(email: string, password: string) {
+export async function signUpUser({ email, password }: Props) {
   const supabase = createClient();
   //   const data = await db.select().from(users).where(eq(users.email, email));
 
