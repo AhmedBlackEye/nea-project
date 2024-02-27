@@ -2,12 +2,12 @@ export { users, userRelations } from "./users";
 export { campaigns, campaignsRelations } from "./campaigns";
 export { invitation, invitationRelations } from "./invitation";
 export { notification, notificationRelations } from "./notification";
-export { userToCampaigns, userToCampaignsRelations } from "./userToCampaigns";
+export { userToCampaigns, userToCampaignsRelations } from "./user-to-campaigns";
 export {
   campaignFollowers,
   campaignFollowersRelations,
-} from "./campaignFollowers";
-export { campaignAnalytics } from "./campaignAnalytics";
+} from "./campaign-followers";
+export { campaignAnalytics } from "./campaign-analytics";
 export {
   pricingType,
   pricingPlanInterval,

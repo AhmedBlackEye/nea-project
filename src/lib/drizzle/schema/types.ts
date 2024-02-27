@@ -5,9 +5,9 @@ import { users } from "./users";
 import { campaigns } from "./campaigns";
 import { invitation } from "./invitation";
 import { notification } from "./notification";
-import { userToCampaigns } from "./userToCampaigns";
-import { campaignFollowers } from "./campaignFollowers";
-import { campaignAnalytics } from "./campaignAnalytics";
+import { userToCampaigns } from "./user-to-campaigns";
+import { campaignFollowers } from "./campaign-followers";
+import { campaignAnalytics } from "./campaign-analytics";
 import { customers, subscriptions, prices, products } from "./stripe";
 
 export type TSelectUser = InferSelectModel<typeof users>;

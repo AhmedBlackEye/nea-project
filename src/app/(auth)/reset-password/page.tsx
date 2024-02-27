@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import {
@@ -9,18 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ForgotPasswordForm from "./form";
-import { useState } from "react";
 
-function ResetPasswordPage() {
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+import UpdatePasswordForm from "./form";
 
+function UpdatePasswordPage() {
   return (
     <Card className="p-4">
       <CardHeader className="text-center">
-        <CardTitle>Reset password</CardTitle>
+        <CardTitle>Update your password</CardTitle>
         <CardDescription>
-          {"Remember your password?"}
+          Remember your password?
           <Link
             href="/sign-in"
             className="ml-1 font-semibold text-primary decoration-2 hover:underline"
@@ -30,16 +26,10 @@ function ResetPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {isFormSubmitted ? (
-          <div className="text-center text-lg font-medium">
-            Check your emails
-          </div>
-        ) : (
-          <ForgotPasswordForm setIsFormSubmitted={setIsFormSubmitted} />
-        )}
+        <UpdatePasswordForm />
       </CardContent>
     </Card>
   );
 }
 
-export default ResetPasswordPage;
+export default UpdatePasswordPage;

@@ -24,7 +24,7 @@ export async function signUpUser({ email, password }: Props) {
 
 export async function resetPassword(email: string) {
   const response = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.HOME_URL}/update-password`,
+    redirectTo: `${process.env.HOME_URL}/reset-password`,
   });
   return response;
 }
