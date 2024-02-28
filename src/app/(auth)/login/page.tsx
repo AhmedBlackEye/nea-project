@@ -20,7 +20,7 @@ function LoginPage() {
         <CardDescription>
           {"Don't have an account yet?"}
           <Link
-            href="/sign-up"
+            href="/register"
             className="ml-1 font-semibold text-primary decoration-2 hover:underline"
           >
             Sign up

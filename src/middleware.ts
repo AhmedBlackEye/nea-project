@@ -1,8 +1,26 @@
-import { NextRequest } from "next/server";
-import { updateSession } from "@/lib/middleware/update-session";
+import { NextRequest, NextResponse } from "next/server";
+
+import { AppMiddleware, updateSession } from "./lib/middleware";
+import {
+  APP_DOMAIN,
+  APP_HOSTNAMES,
+  DEFAULT_REDIRECTS,
+} from "./lib/middleware/constants";
+import { parseRequest } from "./lib/middleware/utils";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  await updateSession(request);
+  const { path, key, domain } = parseRequest(request);
+  console.log(APP_DOMAIN);
+  // for App
+  if (APP_HOSTNAMES.has(domain)) {
+    return AppMiddleware(request);
+  }
+  console.log("passed", key in DEFAULT_REDIRECTS, domain, APP_DOMAIN);
+  // default redirects for dub.sh
+  if (domain === APP_DOMAIN && key in DEFAULT_REDIRECTS) {
+    return NextResponse.redirect(new URL(DEFAULT_REDIRECTS[key]));
+  }
 }
 
 export const config = {

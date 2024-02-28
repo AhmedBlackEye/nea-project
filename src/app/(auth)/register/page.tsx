@@ -20,7 +20,7 @@ function SignUpPage() {
         <CardDescription>
           Already have an account?
           <Link
-            href="/sign-in"
+            href="/login"
             className="ml-1 font-semibold text-primary decoration-2 hover:underline"
           >
             Sign in

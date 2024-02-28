@@ -1,13 +1,13 @@
 "use server";
 
-import { createClient } from "@lib/supabase/server";
+import { createServerClient } from "@lib/supabase/server";
 
 type Props = {
   email: string;
   password: string;
 };
 
-const supabase = createClient();
+const supabase = createServerClient();
 
 export async function loginUser({ email, password }: Props) {
   const response = await supabase.auth.signInWithPassword({ email, password });
@@ -24,7 +24,7 @@ export async function signUpUser({ email, password }: Props) {
 
 export async function resetPassword(email: string) {
   const response = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.SITE_URL}/reset-password`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_DOMAIN}/reset-password`,
   });
   return response;
 }
