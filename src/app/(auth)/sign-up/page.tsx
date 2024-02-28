@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import SignUpForm from "./form";
-import GoogleSignBtn from "@/components/auth/google-btn";
+import GoogleOAuthBtn from "@/components/auth/google-oauth-btn";
 
 function SignUpPage() {
   return (
@@ -28,7 +28,7 @@ function SignUpPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <GoogleSignBtn type="Sign up" />
+        <GoogleOAuthBtn type="Sign up" />
         <div className="my-4 flex w-full items-center justify-center gap-2">
           <Separator className="shrink" />
           <span className="w-full text-center text-sm font-medium text-muted-foreground">

@@ -21,8 +21,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signUpSchema, TSignUpSchema } from "./schema";
 import { Shell } from "lucide-react";
+import { useLocalStorage } from "@/hooks";
 
 function SignUpForm() {
+  const router = useRouter();
+  const [submitError, setSubmitError] = useState("");
+  const [, setSavedEmail] = useLocalStorage("Auth_Email", "");
+  const [, setSavedPassword] = useLocalStorage("Auth_Password", "");
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -33,16 +38,14 @@ function SignUpForm() {
     },
   });
   const isLoading = form.formState.isSubmitting;
-  const [submitError, setSubmitError] = useState("");
-  const router = useRouter();
   const onSubmit: SubmitHandler<TSignUpSchema> = async (formData) => {
     const { error } = await signUpUser(formData);
     if (error) {
       setSubmitError(error.message);
     } else {
       if (formData.rememberMe) {
-        localStorage.setItem("Auth_Email", formData.email);
-        localStorage.setItem("Auth_Password", formData.password);
+        setSavedEmail(formData.email);
+        setSavedPassword(formData.password);
       }
       router.replace("/dashboard");
     }

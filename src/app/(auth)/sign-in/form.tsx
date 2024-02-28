@@ -22,13 +22,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, TLoginSchema } from "./schema";
 import Link from "next/link";
 import { Shell } from "lucide-react";
+import { useLocalStorage } from "@/hooks";
 
 function LoginForm() {
+  const [savedEmail, setSavedEmail] = useLocalStorage("Auth_Email", "");
+  const [savedPassword, setSavedPassword] = useLocalStorage(
+    "Auth_Password",
+    "",
+  );
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: localStorage.getItem("Auth_Email") || "",
-      password: localStorage.getItem("Auth_Password") || "",
+      email: savedEmail,
+      password: savedPassword,
       rememberMe: false,
     },
   });
@@ -41,8 +47,8 @@ function LoginForm() {
       setSubmitError(error.message);
     } else {
       if (formData.rememberMe) {
-        localStorage.setItem("Auth_Email", formData.email);
-        localStorage.setItem("Auth_Password", formData.password);
+        setSavedEmail(formData.email);
+        setSavedPassword(formData.password);
       }
       router.replace("/dashboard");
     }

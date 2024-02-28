@@ -2,20 +2,18 @@
 import React from "react";
 import { Button } from "../ui/button";
 import Google from "../icons/google";
-import { signWithGoogle } from "@/lib/server-actions/auth";
-// import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 type Props = {
   type: "Sign in" | "Sign up";
 };
 
-function GoogleSignBtn({ type }: Props) {
-  //   const router = useRouter();
+function GoogleOAuthBtn({ type }: Props) {
+  const supabase = createClient();
   async function handleOnClick() {
-    console.log("handle sign");
-    const response = await signWithGoogle();
-    console.log(response);
-    // if (error) router.replace("/error");
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
   }
   return (
     <Button
@@ -32,4 +30,4 @@ function GoogleSignBtn({ type }: Props) {
   );
 }
 
-export default GoogleSignBtn;
+export default GoogleOAuthBtn;

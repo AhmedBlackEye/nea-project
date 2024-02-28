@@ -24,7 +24,7 @@ export async function signUpUser({ email, password }: Props) {
 
 export async function resetPassword(email: string) {
   const response = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.HOME_URL}/reset-password`,
+    redirectTo: `${process.env.SITE_URL}/reset-password`,
   });
   return response;
 }
@@ -37,12 +37,13 @@ export async function updatePassword(newPassword: string) {
 export async function signWithGoogle() {
   const response = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: {
-      queryParams: {
-        access_type: "offline",
-        prompt: "consent",
-      },
-    },
+    // options: {
+    //   queryParams: {
+    //     access_type: "offline",
+    //     prompt: "consent",
+    //   },
+    // },
   });
+  console.log(response);
   return response;
 }
