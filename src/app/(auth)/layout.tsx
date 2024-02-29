@@ -6,7 +6,7 @@ type LayoutProps = {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <div className="h-screen flex justify-center items-center">{children}</div>
+    <div className="flex h-screen items-center justify-center">{children}</div>
   );
 }
 

@@ -1,25 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { AppMiddleware, updateSession } from "./lib/middleware";
-import {
-  APP_DOMAIN,
-  APP_HOSTNAMES,
-  DEFAULT_REDIRECTS,
-} from "./lib/middleware/constants";
-import { parseRequest } from "./lib/middleware/utils";
+import { AUTH_ROUTES, PUBLIC_ROUTES } from "@lib/constants/middleware";
+import { updateSession } from "@lib/middleware";
+import { parseRequest } from "@lib/middleware/utils";
+import { createServerClient } from "@lib/supabase/server";
 
 export async function middleware(request: NextRequest) {
   await updateSession(request);
-  const { path, key, domain } = parseRequest(request);
-  console.log(APP_DOMAIN);
-  // for App
-  if (APP_HOSTNAMES.has(domain)) {
-    return AppMiddleware(request);
+  const supabase = createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const { key } = parseRequest(request);
+
+  if (!user && !PUBLIC_ROUTES.has(key) && !AUTH_ROUTES.has(key)) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
-  console.log("passed", key in DEFAULT_REDIRECTS, domain, APP_DOMAIN);
-  // default redirects for dub.sh
-  if (domain === APP_DOMAIN && key in DEFAULT_REDIRECTS) {
-    return NextResponse.redirect(new URL(DEFAULT_REDIRECTS[key]));
+  if (user && AUTH_ROUTES.has(key)) {
+    return NextResponse.redirect(new URL("/projects", request.url));
   }
 }
 

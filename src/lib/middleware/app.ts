@@ -1,3 +1,5 @@
+// TODO: Subdomains
+
 import { NextRequest, NextResponse } from "next/server";
 
 import { createServerClient } from "../supabase/server";
@@ -9,7 +11,7 @@ export default async function AppMiddleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
   const { path, fullPath } = parseRequest(req);
-  
+
   if (!user && path !== "/login" && path !== "/register") {
     return NextResponse.redirect(
       new URL(

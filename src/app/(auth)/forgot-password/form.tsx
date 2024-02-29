@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Shell } from "lucide-react";
 import { z } from "zod";
+import { useLocalStorage } from "@/hooks";
 
 const schema = z.object({
   email: z.string().min(1, "Email is required").email(),
@@ -28,14 +29,15 @@ type Props = {
   setIsFormSubmitted: Dispatch<SetStateAction<boolean>>;
 };
 function ForgotPasswordForm({ setIsFormSubmitted }: Props) {
+  const [submitError, setSubmitError] = useState("");
+  const [savedEmail] = useLocalStorage("Auth_Email", "");
   const form = useForm<TSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: localStorage.getItem("Auth_Email") || "",
+      email: savedEmail,
     },
   });
   const isLoading = form.formState.isSubmitting;
-  const [submitError, setSubmitError] = useState("");
 
   const onSubmit: SubmitHandler<TSchema> = async (formData) => {
     const { error } = await resetPassword(formData.email);
