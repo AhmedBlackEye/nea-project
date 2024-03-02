@@ -24,24 +24,31 @@ const navLinks = [
   { title: "Blog", link: "#" },
 ];
 
-export default function NavigationMenuDemo() {
+type Props = {
+  isNavVisible?: boolean;
+};
+
+export default function UnauthorizedNavbar({ isNavVisible = true }: Props) {
   const { user } = useUser();
   return (
-    <header className="fixed flex  w-full justify-between px-8 py-2">
+    <header className="fixed top-0 flex w-full justify-between px-8 py-2 ">
       <Logo />
-      <NavigationMenu className="min hidden lg:flex">
-        <NavigationMenuList>
-          {navLinks.map((navItem) => (
-            <NavigationMenuItem key={navItem.title}>
-              <Link href={navItem.link} legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  {navItem.title}
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+      {isNavVisible && (
+        <NavigationMenu className="hidden lg:flex">
+          <NavigationMenuList>
+            {navLinks.map((navItem) => (
+              <NavigationMenuItem key={navItem.title}>
+                <Link href={navItem.link} legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    {navItem.title}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+      )}
+
       <aside className="flex items-center gap-4">
         <ModeToggle />
         {user ? (

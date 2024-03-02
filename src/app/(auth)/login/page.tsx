@@ -16,7 +16,7 @@ function LoginPage() {
   return (
     <Card className="p-4">
       <CardHeader className="text-center">
-        <CardTitle>Sign in to Waitify</CardTitle>
+        <CardTitle>Sign in to Waitlytics</CardTitle>
         <CardDescription>
           {"Don't have an account yet?"}
           <Link

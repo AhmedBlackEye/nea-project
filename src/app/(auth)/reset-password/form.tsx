@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Shell } from "lucide-react";
 import { z } from "zod";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useRouter } from "next/navigation";
 
 const schema = z
   .object({
@@ -36,6 +37,7 @@ const schema = z
 type TSchema = z.infer<typeof schema>;
 
 function UpdatePasswordForm() {
+  const router = useRouter();
   const form = useForm<TSchema>({
     resolver: zodResolver(schema),
     defaultValues: { password: "", confirmPassword: "" },
@@ -45,7 +47,7 @@ function UpdatePasswordForm() {
 
   const onSubmit: SubmitHandler<TSchema> = async (formData) => {
     const { error } = await updatePassword(formData.password);
-    if (error) setSubmitError(error.message);
+    error ? setSubmitError(error.message) : router.replace("/login");
   };
   return (
     <Form {...form}>

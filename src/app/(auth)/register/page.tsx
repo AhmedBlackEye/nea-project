@@ -16,7 +16,7 @@ function SignUpPage() {
   return (
     <Card className="p-4">
       <CardHeader className="text-center">
-        <CardTitle>Sign up to Waitify</CardTitle>
+        <CardTitle>Sign up to Waitlytics</CardTitle>
         <CardDescription>
           Already have an account?
           <Link

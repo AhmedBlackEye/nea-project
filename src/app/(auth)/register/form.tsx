@@ -47,7 +47,7 @@ function SignUpForm() {
         setSavedEmail(formData.email);
         setSavedPassword(formData.password);
       }
-      router.replace("/dashboard");
+      router.replace("/projects");
     }
   };
   return (
