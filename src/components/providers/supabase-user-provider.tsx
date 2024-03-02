@@ -9,7 +9,7 @@ import {
 } from "react";
 import { AuthUser } from "@supabase/supabase-js";
 
-import { TSelectSubscriptions } from "@/lib/drizzle/schema/types";
+import { TSubscriptions } from "@/lib/drizzle/schema/types";
 import { createClient } from "@/lib/supabase/client";
 import { getUserSubscriptionStatus } from "@lib/queries";
 import { toast } from "../ui/use-toast";
@@ -22,9 +22,7 @@ export function SupabaseUserProvider({ children }: Props) {
   const supabase = createClient();
 
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [subscription, setSubscription] = useState<TSelectSubscriptions | null>(
-    null,
-  );
+  const [subscription, setSubscription] = useState<TSubscriptions | null>(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -55,7 +53,7 @@ export function SupabaseUserProvider({ children }: Props) {
 
 type SupabaseUserContextType = {
   user: AuthUser | null;
-  subscription: TSelectSubscriptions | null;
+  subscription: TSubscriptions | null;
 };
 
 const SupabaseUserContext = createContext<SupabaseUserContextType>({

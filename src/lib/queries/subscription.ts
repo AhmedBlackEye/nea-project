@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "../drizzle/db";
-import { TSelectSubscriptions } from "../drizzle/schema/types";
+import { TSubscriptions } from "../drizzle/schema/types";
 
 export async function getUserSubscriptionStatus(userId: string) {
   try {
@@ -9,7 +9,7 @@ export async function getUserSubscriptionStatus(userId: string) {
       where: (subscription, { eq }) => eq(subscription.userId, userId),
     });
 
-    if (data) return { data: data as TSelectSubscriptions, error: null };
+    if (data) return { data: data as TSubscriptions, error: null };
   } catch (error) {
     console.error(`🔴 getUserSubscriptionStatus produced: ${error}`);
   }

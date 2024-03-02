@@ -10,40 +10,36 @@ import { campaignFollowers } from "./campaign-followers";
 import { campaignAnalytics } from "./campaign-analytics";
 import { customers, subscriptions, prices, products } from "./stripe";
 
-export type TSelectUser = InferSelectModel<typeof users>;
+export type TUser = InferSelectModel<typeof users>;
 export type TInsertUser = InferInsertModel<typeof users>;
 
-export type TSelectCampaign = InferSelectModel<typeof campaigns>;
+export type TCampaign = InferSelectModel<typeof campaigns>;
 export type TInsertCampaign = InferInsertModel<typeof campaigns>;
 
-export type TSelectInvitation = InferSelectModel<typeof invitation>;
+export type TInvitation = InferSelectModel<typeof invitation>;
 export type TInsertInvitation = InferInsertModel<typeof invitation>;
 
-export type TSelectNotification = InferSelectModel<typeof notification>;
+export type TNotification = InferSelectModel<typeof notification>;
 export type TInsertNotification = InferInsertModel<typeof notification>;
 
-export type TSelectUserToCampaigns = InferSelectModel<typeof userToCampaigns>;
+export type TUserToCampaigns = InferSelectModel<typeof userToCampaigns>;
 export type TInsertUserToCampaigns = InferInsertModel<typeof userToCampaigns>;
 
-export type TSelectCampaignFollowers = InferSelectModel<
-  typeof campaignFollowers
->;
+export type TCampaignFollowers = InferSelectModel<typeof campaignFollowers>;
 export type TInsertCampaignFollowers = InferInsertModel<
   typeof campaignFollowers
 >;
 
-export type TSelectCampaignAnalytics = InferSelectModel<
-  typeof campaignAnalytics
->;
+export type TCampaignAnalytics = InferSelectModel<typeof campaignAnalytics>;
 
-export type TSelectCustomers = InferSelectModel<typeof customers>;
+export type TCustomers = InferSelectModel<typeof customers>;
 export type TInsertCustomers = InferInsertModel<typeof customers>;
 
-export type TSelectSubscriptions = InferSelectModel<typeof subscriptions>;
+export type TSubscriptions = InferSelectModel<typeof subscriptions>;
 export type TInsertSubscriptions = InferInsertModel<typeof subscriptions>;
 
-export type TSelectPrices = InferSelectModel<typeof prices>;
+export type TPrices = InferSelectModel<typeof prices>;
 export type TInsertPrices = InferInsertModel<typeof prices>;
 
-export type TSelectProducts = InferSelectModel<typeof products>;
+export type TProducts = InferSelectModel<typeof products>;
 export type TInsertProducts = InferInsertModel<typeof products>;
