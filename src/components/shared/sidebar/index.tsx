@@ -15,108 +15,48 @@ import {
   Users2,
 } from "lucide-react";
 
-import { Nav } from "./nav";
-
 import { Separator } from "@components/ui/separator";
 
-import { useToggle } from "@/hooks";
 import Logo from "../logo";
+import SidebarItem from "./sidebarItem";
 
-function Sidebar() {
-  const [isCollapsed, toggleIsCollapsed] = useToggle(true);
+type SidebarLink = {
+  title: string;
+  label?: string;
+  Icon: LucideIcon;
+  href: string;
+};
 
+type SidebarProps = {
+  itemsStart: (SidebarLink[] | null)[];
+  itemsEnd?: (SidebarLink[] | null)[];
+};
+
+function Sidebar({ itemsStart, itemsEnd }: SidebarProps) {
   return (
-    <div className="fixed h-screen max-w-xs border-r border-border p-2">
+    <nav className="fixed h-screen max-w-xs border-r border-border p-2">
       <div className="flex gap-2">
-        <Logo
-          size="large"
-          textVisibilty={isCollapsed ? "hidden" : "visible"}
-          link=""
-        />
-        <button onClick={toggleIsCollapsed} className="translate-x-4">
-          {isCollapsed ? <ArrowRight /> : <ArrowLeft />}
-        </button>
+        <Logo size="large" link="" />
       </div>
-      <Separator />
-      <Nav
-        isCollapsed={isCollapsed}
-        links={[
-          {
-            title: "Inbox",
-            label: "128",
-            icon: Inbox,
-            variant: "default",
-          },
-          {
-            title: "Drafts",
-            label: "9",
-            icon: File,
-            variant: "ghost",
-          },
-          {
-            title: "Sent",
-            label: "",
-            icon: Send,
-            variant: "ghost",
-          },
-          {
-            title: "Junk",
-            label: "23",
-            icon: ArchiveX,
-            variant: "ghost",
-          },
-          {
-            title: "Trash",
-            label: "",
-            icon: Trash2,
-            variant: "ghost",
-          },
-          {
-            title: "Archive",
-            label: "",
-            icon: Archive,
-            variant: "ghost",
-          },
-        ]}
-      />
-      <Separator />
-      <Nav
-        isCollapsed={isCollapsed}
-        links={[
-          {
-            title: "Social",
-            label: "972",
-            icon: Users2,
-            variant: "ghost",
-          },
-          {
-            title: "Updates",
-            label: "342",
-            icon: AlertCircle,
-            variant: "ghost",
-          },
-          {
-            title: "Forums",
-            label: "128",
-            icon: MessagesSquare,
-            variant: "ghost",
-          },
-          {
-            title: "Shopping",
-            label: "8",
-            icon: ShoppingCart,
-            variant: "ghost",
-          },
-          {
-            title: "Promotions",
-            label: "21",
-            icon: Archive,
-            variant: "ghost",
-          },
-        ]}
-      />
-    </div>
+      <div className="flex flex-col justify-between">
+        <div>
+          {itemsStart.map((items, index) => (
+            {items !== null ? <Nav items={items}/>:<Nav items={items}/>}
+          ))}
+        </div>
+      </div>
+    </nav>
   );
 }
 
 export default Sidebar;
+
+function Nav(items: SidebarLink[]) {
+  return (
+    <ul className="grid gap-1 px-2">
+      {items.map((item, index) => (
+        <SidebarItem key={index} {...item} />
+      ))}
+    </ul>
+  );
+}
