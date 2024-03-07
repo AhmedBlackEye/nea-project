@@ -31,8 +31,8 @@ type Props = {
 export default function UnauthorizedNavbar({ isNavVisible = true }: Props) {
   const { user } = useUser();
   return (
-    <header className="fixed top-0 flex w-full justify-between px-8 py-2 ">
-      <Logo size={"large"} />
+    <header className="sticky top-0 flex w-full justify-between border-b-2  px-8 py-2">
+      <Logo />
       {isNavVisible && (
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>

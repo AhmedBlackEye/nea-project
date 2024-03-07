@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 // A custom hook that abstracts local storage interaction
