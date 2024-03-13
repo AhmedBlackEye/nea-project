@@ -8,22 +8,14 @@ type Props = {
   password: string;
 };
 
-const supabase = createServerClient();
-
 export async function loginUser({ email, password }: Props) {
+  const supabase = createServerClient();
   const response = await supabase.auth.signInWithPassword({ email, password });
-
-  // console.log("Sign in: ", response);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  console.log("Signup", user);
-  if (!response.error) redirect("/projects");
-
   return response;
 }
 
 export async function signUpUser({ email, password }: Props) {
+  const supabase = createServerClient();
   const response = await supabase.auth.signUp({
     email,
     password,
@@ -32,18 +24,21 @@ export async function signUpUser({ email, password }: Props) {
 }
 
 export async function resetPassword(email: string) {
+  const supabase = createServerClient();
   const response = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_DOMAIN}/reset-password`,
+    redirectTo: `http://${process.env.NEXT_PUBLIC_APP_DOMAIN}/reset-password`,
   });
   return response;
 }
 
 export async function updatePassword(newPassword: string) {
+  const supabase = createServerClient();
   const response = await supabase.auth.updateUser({ password: newPassword });
   return response;
 }
 
 export async function signWithGoogle() {
+  const supabase = createServerClient();
   const response = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -51,21 +46,15 @@ export async function signWithGoogle() {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
+      redirectTo: `http://${process.env.NEXT_PUBLIC_APP_DOMAIN}/api/auth/callback`,
     },
   });
-  if (response.data.url) redirect(response.data.url);
 
   return response;
 }
 
 export async function signOut() {
+  const supabase = createServerClient();
   const response = await supabase.auth.signOut();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  console.log("Log out", user);
-
-  redirect("/login");
-  // return error;
+  return response;
 }

@@ -13,12 +13,12 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
   const { key } = parseRequest(request);
 
-  if (!user && !PUBLIC_ROUTES.has(key) && !AUTH_ROUTES.has(key)) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-  if (user && AUTH_ROUTES.has(key)) {
-    return NextResponse.redirect(new URL("/projects", request.url));
-  }
+  // if (!user && !PUBLIC_ROUTES.has(key) && !AUTH_ROUTES.has(key)) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
+  // if (user && AUTH_ROUTES.has(key)) {
+  //   return NextResponse.redirect(new URL("/projects", request.url));
+  // }
 }
 
 export const config = {

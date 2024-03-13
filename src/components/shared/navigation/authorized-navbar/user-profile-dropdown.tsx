@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "./user-avatar";
 import { useUser } from "@/components/providers/supabase-user-provider";
-import { signOut } from "@/lib/server-actions/auth";
+import { signOut } from "@/lib/actions/auth";
 
 function UserProfileDropdown() {
   const { user } = useUser();

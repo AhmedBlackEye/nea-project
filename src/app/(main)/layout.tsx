@@ -1,4 +1,3 @@
-import UnauthorizedNavbar from "@/components/shared/navigation/unauthorized-navbar";
 import { createServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -11,14 +10,11 @@ async function Layout({ children }: LayoutProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) return redirect("/projects");
+  if (!user) return redirect("/login");
   return (
-    <>
-      <UnauthorizedNavbar isNavVisible={false} />
-      <main className="flex h-screen items-center justify-center">
-        {children}
-      </main>
-    </>
+    <main className="flex h-screen items-center justify-center">
+      {children}
+    </main>
   );
 }
 

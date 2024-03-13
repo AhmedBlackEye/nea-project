@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { updatePassword } from "@/lib/server-actions/auth";
+import { updatePassword } from "@/lib/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Shell } from "lucide-react";

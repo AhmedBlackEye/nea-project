@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { signUpUser } from "@/lib/server-actions/auth";
+import { signUpUser } from "@/lib/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signUpSchema, TSignUpSchema } from "./schema";

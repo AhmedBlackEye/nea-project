@@ -1,6 +1,6 @@
 "use client";
 
-import { signWithGoogle } from "@/lib/server-actions/auth";
+import { signWithGoogle } from "@/lib/actions/auth";
 import { Button } from "@components/ui/button";
 import Google from "@components/icons/google";
 
