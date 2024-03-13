@@ -37,6 +37,7 @@ export async function updatePassword(newPassword: string) {
   return response;
 }
 
+// Not currently being used because I switched to request to client side
 export async function signWithGoogle() {
   const supabase = createServerClient();
   const response = await supabase.auth.signInWithOAuth({
@@ -49,7 +50,7 @@ export async function signWithGoogle() {
       redirectTo: `http://${process.env.NEXT_PUBLIC_APP_DOMAIN}/api/auth/callback`,
     },
   });
-
+  if (!response.error) redirect(response.data.url);
   return response;
 }
 

@@ -11,11 +11,7 @@ async function Layout({ children }: LayoutProps) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return redirect("/login");
-  return (
-    <main className="flex h-screen items-center justify-center">
-      {children}
-    </main>
-  );
+  return <>{children}</>;
 }
 
 export default Layout;

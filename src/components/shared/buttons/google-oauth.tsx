@@ -1,17 +1,15 @@
 "use client";
 
-import { signWithGoogle } from "@/lib/actions/auth";
 import { Button } from "@components/ui/button";
 import Google from "@components/icons/google";
+import { createClient } from "@/lib/supabase/client";
+import { signWithGoogle } from "@/lib/actions/auth";
 
 type Props = {
   type: "Sign in" | "Sign up";
 };
 
-function GoogleOAuthBtn({ type }: Props) {
-  async function handleOnClick() {
-    await signWithGoogle();
-  }
+export default function GoogleOAuthBtn({ type }: Props) {
   return (
     <Button
       variant={"outline"}
@@ -27,4 +25,16 @@ function GoogleOAuthBtn({ type }: Props) {
   );
 }
 
-export default GoogleOAuthBtn;
+async function handleOnClick() {
+  const supabase = await createClient();
+  await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+      redirectTo: `http://${process.env.NEXT_PUBLIC_APP_DOMAIN}/api/auth/callback`,
+    },
+  });
+}
