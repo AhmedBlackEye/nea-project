@@ -1,19 +1,16 @@
 "use client";
-import React from "react";
-import { Button } from "../ui/button";
-import Google from "../icons/google";
-import { createClient } from "@/lib/supabase/client";
+
+import { signWithGoogle } from "@/lib/server-actions/auth";
+import { Button } from "@components/ui/button";
+import Google from "@components/icons/google";
 
 type Props = {
   type: "Sign in" | "Sign up";
 };
 
 function GoogleOAuthBtn({ type }: Props) {
-  const supabase = createClient();
   async function handleOnClick() {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
+    await signWithGoogle();
   }
   return (
     <Button

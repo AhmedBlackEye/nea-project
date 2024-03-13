@@ -40,9 +40,10 @@ function LoginForm() {
   });
   const isLoading = form.formState.isSubmitting;
   const [submitError, setSubmitError] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   const onSubmit: SubmitHandler<TLoginSchema> = async (formData) => {
     const { error } = await loginUser(formData);
+    // console.log(error);
     if (error) {
       setSubmitError(error.message);
     } else {
@@ -50,7 +51,7 @@ function LoginForm() {
         setSavedEmail(formData.email);
         setSavedPassword(formData.password);
       }
-      router.replace("/projects");
+      // router.replace("/projects");
     }
   };
   return (

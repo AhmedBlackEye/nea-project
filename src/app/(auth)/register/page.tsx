@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import SignUpForm from "./form";
-import GoogleOAuthBtn from "@/components/auth/google-oauth-btn";
+import GoogleOAuthBtn from "@/components/shared/buttons/google-oauth";
 
 function SignUpPage() {
   return (

@@ -100,7 +100,6 @@ function SidebarItem({
   className,
   ...props
 }: SidebarItemProps) {
-  console.log(label);
   return (
     <Link
       href={href}

@@ -6,12 +6,12 @@ import {
   SidebarFooter,
   SidebarItem,
   SidebarList,
-} from "@/components/shared/sidebar";
+} from "@/components/shared/navigation/sidebar";
 import { usePathname } from "next/navigation";
 import { sidebarData, sidebarFooter } from "./sidebar-constants";
 import Logo from "@/components/shared/logo";
-import AuthorizedNavbar from "@/components/shared/authorized-navbar";
-import UpgradeButton from "@/components/shared/upgrade-button";
+import AuthorizedNavbar from "@/components/shared/navigation/authorized-navbar";
+import UpgradeSubscriptionBtn from "@/components/shared/buttons/upgrade-subscription";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -46,7 +46,7 @@ function Layout({ children }: LayoutProps) {
         </SidebarContent>
 
         <SidebarFooter>
-          <UpgradeButton />
+          <UpgradeSubscriptionBtn />
           <SidebarList showTopSeparator>
             {sidebarFooter.map((item) => (
               <SidebarItem

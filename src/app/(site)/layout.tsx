@@ -1,4 +1,4 @@
-import UnauthorizedNavbar from "@/components/shared/unauthorized-navbar";
+import UnauthorizedNavbar from "@/components/shared/navigation/unauthorized-navbar";
 
 type LayoutProps = {
   children: React.ReactNode;

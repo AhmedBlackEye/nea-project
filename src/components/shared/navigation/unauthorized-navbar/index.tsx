@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 
 import {
@@ -12,7 +11,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import Logo from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import ThemeToggle from "@/components/shared/theme-toggle";
 import { useUser } from "@/components/providers/supabase-user-provider";
 import { Menu } from "lucide-react";
 
@@ -33,24 +32,10 @@ export default function UnauthorizedNavbar({ isNavVisible = true }: Props) {
   return (
     <header className="sticky top-0 flex w-full justify-between border-b-2  px-8 py-2">
       <Logo />
-      {isNavVisible && (
-        <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList>
-            {navLinks.map((navItem) => (
-              <NavigationMenuItem key={navItem.title}>
-                <Link href={navItem.link} legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {navItem.title}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-      )}
+      {isNavVisible && <NavMenu />}
 
       <aside className="flex items-center gap-4">
-        <ModeToggle />
+        <ThemeToggle />
         {user ? (
           <Button asChild>
             <Link href="/projects">Dashboard</Link>
@@ -68,5 +53,23 @@ export default function UnauthorizedNavbar({ isNavVisible = true }: Props) {
         <Menu className="lg:hidden" />
       </aside>
     </header>
+  );
+}
+
+function NavMenu() {
+  return (
+    <NavigationMenu className="hidden lg:flex">
+      <NavigationMenuList>
+        {navLinks.map((navItem) => (
+          <NavigationMenuItem key={navItem.title}>
+            <Link href={navItem.link} legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                {navItem.title}
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
