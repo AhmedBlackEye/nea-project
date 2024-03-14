@@ -29,6 +29,16 @@ const nextConfig = {
       },
     ];
   },
+  //Only Here for github codespaces to work
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "probable-barnacle-9gxjx7g7vvw27w6.github.dev",
+        "github.dev",
+        "localhost:3000",
+      ],
+    },
+  },
 };
 
 export default nextConfig;
