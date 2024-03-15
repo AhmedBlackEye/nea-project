@@ -1,149 +1,214 @@
 "use client";
-import { DependencyType } from "@/components/auto-form/types";
-import AutoForm, { AutoFormSubmit } from "@components/auto-form";
-import * as z from "zod";
 
-// Define your form schema using zod
-const formSchema = z.object({
-  username: z
-    .string({
-      required_error: "Username is required.",
-    })
-    // You can use zod's built-in validation as normal
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-  password: z
-    .string({
-      required_error: "Password is required.",
-    })
-    // Use the "describe" method to set the label
-    // If no label is set, the field name will be used
-    // and un-camel-cased
-    .describe("Your secure password")
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "@/components/ui/use-toast";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-  favouriteNumber: z.coerce // When using numbers and dates, you must use coerce
-    .number({
-      invalid_type_error: "Favourite number must be a number.",
-    })
-    .min(1, {
-      message: "Favourite number must be at least 1.",
-    })
-    .max(10, {
-      message: "Favourite number must be at most 10.",
-    })
-    .default(5) // You can set a default value
-    .optional(),
+import { cn } from "@/lib/utils";
 
-  acceptTerms: z
-    .boolean()
-    .describe("Accept terms and conditions.")
-    .refine((value) => value, {
-      message: "You must accept the terms and conditions.",
-      path: ["acceptTerms"],
-    }),
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-  // Date will show a date picker
-  birthday: z.coerce.date().optional(),
+import { Shell } from "lucide-react";
+import { newProjectSchema, TNewProjectSchema } from "./schema";
+import { nanoid } from "nanoid";
 
-  sendMeMails: z.boolean().optional(),
+const languages = [
+  { label: "English", value: "en" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+] as const;
 
-  // Enum will show a select
-  color: z.enum(["red", "green", "blue"]),
-
-  // Create sub-objects to create accordion sections
-  address: z.object({
-    street: z.string(),
-    city: z.string(),
-    zip: z.string(),
-  }),
-});
-
-function App() {
+function NewProjectForm() {
+  const form = useForm<TNewProjectSchema>({
+    resolver: zodResolver(newProjectSchema),
+    defaultValues: {
+      orgranization: "en",
+      projectName: "",
+      projectSlug: "",
+      emailNewSignups: true,
+      startAtDate: new Date(),
+      endAtDate: new Date(),
+    },
+  });
+  const isLoading = form.formState.isSubmitting;
+  const [submitError, setSubmitError] = useState("");
+  const onSubmit: SubmitHandler<TNewProjectSchema> = async (formData) => {};
+  const handleProjectSlugChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget.value;
+    if (newValue.length >= 3) {
+      form.setError("projectSlug", {
+        type: "custom",
+        message: "Slug already taken!",
+      });
+    }
+  };
   return (
-    <AutoForm
-      // Pass the schema to the form
-      formSchema={formSchema}
-      // You can add additional config for each field
-      // to customize the UI
-      fieldConfig={{
-        password: {
-          // Use "inputProps" to pass props to the input component
-          // You can use any props that the component accepts
-          inputProps: {
-            type: "password",
-            placeholder: "••••••••",
-          },
-        },
-        favouriteNumber: {
-          // Set a "description" that will be shown below the field
-          description: "Your favourite number between 1 and 10.",
-        },
-        acceptTerms: {
-          inputProps: {
-            required: true,
-          },
-          // You can use JSX in the description
-          description: (
-            <>
-              I agree to the{" "}
-              <a
-                href="#"
-                className="text-primary underline"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("Terms and conditions clicked.");
-                }}
-              >
-                terms and conditions
-              </a>
-              .
-            </>
-          ),
-        },
-
-        birthday: {
-          description: "We need your birthday to send you a gift.",
-        },
-
-        sendMeMails: {
-          // Booleans use a checkbox by default, you can use a switch instead
-          fieldType: "switch",
-        },
-      }}
-      // Optionally, define dependencies between fields
-      dependencies={[
-        {
-          // Hide "color" when "sendMeMails" is not checked as we only need to
-          // know the color when we send mails
-          sourceField: "sendMeMails",
-          type: DependencyType.HIDES,
-          targetField: "color",
-          when: (sendMeMails) => !sendMeMails,
-        },
-      ]}
-    >
-      {/* 
-      Pass in a AutoFormSubmit or a button with type="submit".
-      Alternatively, you can not pass a submit button
-      to create auto-saving forms etc.
-      */}
-      <AutoFormSubmit>Send now</AutoFormSubmit>
-
-      {/*
-      All children passed to the form will be rendered below the form.
-      */}
-      <p className="text-sm text-gray-500">
-        By submitting this form, you agree to our{" "}
-        <a href="#" className="text-primary underline">
-          terms and conditions
-        </a>
-        .
-      </p>
-    </AutoForm>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        onChange={() => {
+          if (submitError) setSubmitError("");
+        }}
+        className="flex w-full flex-col space-y-6 sm:w-[400px] sm:justify-center"
+      >
+        <FormField
+          control={form.control}
+          disabled={isLoading}
+          name="orgranization"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Language</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value
+                        ? languages.find(
+                            (language) => language.value === field.value,
+                          )?.label
+                        : "Select language"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search organization..." />
+                    <CommandList>
+                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandGroup>
+                        {languages.map((language) => (
+                          <CommandItem
+                            value={language.label}
+                            key={language.value}
+                            onSelect={() => {
+                              form.setValue("orgranization", language.value);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                language.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {language.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                This is the language that will be used in the dashboard.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          disabled={isLoading}
+          name="projectName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Waitlist Name</FormLabel>
+              <FormControl>
+                <Input placeholder="My waitlist name..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          disabled={isLoading}
+          name="projectSlug"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center  justify-between ">
+                <FormLabel>Waitlist slug</FormLabel>
+                <button
+                  className="text-sm text-primary decoration-2 hover:underline"
+                  onClick={() => {
+                    form.setValue("projectSlug", nanoid(11), {
+                      shouldValidate: false,
+                    });
+                  }}
+                >
+                  Generate a slug
+                </button>
+              </div>
+              <FormControl>
+                <Input
+                  placeholder="my_waitlist"
+                  {...field}
+                  onChangeCapture={handleProjectSlugChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="emailNewSignups"
+          disabled={isLoading}
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center gap-1.5 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel className="font-medium">Remember me</FormLabel>
+            </FormItem>
+          )}
+        />
+        {submitError && <FormMessage>{submitError}</FormMessage>}
+        <Button type="submit">
+          {isLoading ? <Shell className="mr-2 animate-spin" /> : "Sign in"}
+        </Button>
+      </form>
+    </Form>
   );
 }
+
+export default NewProjectForm;
