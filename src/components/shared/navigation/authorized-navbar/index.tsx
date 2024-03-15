@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 
 function AuthorizedNavbar() {
   return (
-    <div className="sticky inset-x-0 top-0 flex items-center justify-between border-b-2 px-4 py-2">
+    <div className="sticky inset-x-0 top-0 flex items-center justify-between border-b-2 bg-background/90 px-4 py-2 backdrop-blur-xl">
       <NavBreadcrumb />
 
       <aside className="flex items-center gap-3">

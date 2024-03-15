@@ -64,7 +64,7 @@ function Layout({ children }: LayoutProps) {
 
       <div className="w-full">
         <AuthorizedNavbar />
-        <div className="px-4">{children}</div>
+        <div className="p-4 md:p-8 md:pt-6">{children}</div>
       </div>
     </div>
   );

@@ -19,6 +19,9 @@ export const notification = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    senderId: uuid("sender_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
     isRead: boolean("is_read").default(false),
     createdAt: timestamp("created_at", {
       withTimezone: true,
@@ -27,11 +30,15 @@ export const notification = pgTable(
   },
   (table) => {
     return {
-      userIdx: index("index_idx").on(table.userId),
+      sentToIdx: index("index_idx").on(table.userId),
     };
-  }
+  },
 );
 
 export const notificationRelations = relations(notification, ({ one }) => ({
   users: one(users, { fields: [notification.userId], references: [users.id] }),
+  senders: one(users, {
+    fields: [notification.senderId],
+    references: [users.id],
+  }),
 }));
