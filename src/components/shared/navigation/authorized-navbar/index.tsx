@@ -12,11 +12,12 @@ import ThemeToggle from "@components/shared/theme-toggle";
 import { Bell } from "lucide-react";
 import UserProfileDropdown from "./user-profile-dropdown";
 import { Button } from "@/components/ui/button";
+import Logo from "../../logo";
 
 function AuthorizedNavbar() {
   return (
     <div className="sticky inset-x-0 top-0 flex items-center justify-between border-b-2 bg-background/90 px-4 py-2 backdrop-blur-xl">
-      <NavBreadcrumb />
+      <Logo className="ml-2 md:ml-4" />
 
       <aside className="flex items-center gap-3">
         <ThemeToggle />
@@ -31,22 +32,22 @@ function AuthorizedNavbar() {
 
 export default AuthorizedNavbar;
 
-function NavBreadcrumb() {
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-  );
-}
+// function NavBreadcrumb() {
+//   return (
+//     <Breadcrumb>
+//       <BreadcrumbList>
+//         <BreadcrumbItem>
+//           <BreadcrumbLink href="/">Home</BreadcrumbLink>
+//         </BreadcrumbItem>
+//         <BreadcrumbSeparator />
+//         <BreadcrumbItem>
+//           <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+//         </BreadcrumbItem>
+//         <BreadcrumbSeparator />
+//         <BreadcrumbItem>
+//           <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+//         </BreadcrumbItem>
+//       </BreadcrumbList>
+//     </Breadcrumb>
+//   );
+// }

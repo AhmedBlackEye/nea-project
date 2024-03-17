@@ -9,7 +9,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import { TooltipProvider } from "@components/ui/tooltip";
 import { useState } from "react";
 
 function AutoFormLabel({
@@ -24,19 +23,17 @@ function AutoFormLabel({
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   console.log(isTooltipOpen);
   return (
-    <TooltipProvider delayDuration={150}>
-      <FormLabel className={cn("flex items-center gap-1", className)}>
-        {label}
-        {tooltipDescription && (
-          <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-            <TooltipTrigger>
-              <Info className="h-4 w-4 stroke-muted-foreground" />
-            </TooltipTrigger>
-            <TooltipContent>{tooltipDescription}</TooltipContent>
-          </Tooltip>
-        )}
-      </FormLabel>
-    </TooltipProvider>
+    <FormLabel className={cn("flex items-center gap-1", className)}>
+      {label}
+      {tooltipDescription && (
+        <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+          <TooltipTrigger>
+            <Info className="h-4 w-4 stroke-muted-foreground" />
+          </TooltipTrigger>
+          <TooltipContent>{tooltipDescription}</TooltipContent>
+        </Tooltip>
+      )}
+    </FormLabel>
   );
 }
 

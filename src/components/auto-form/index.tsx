@@ -15,6 +15,7 @@ import {
   getDefaultValues,
   getObjectFormSchema,
 } from "./utils";
+import { TooltipProvider } from "@components/ui/tooltip";
 
 export function AutoFormSubmit({
   children,
@@ -82,22 +83,24 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
 
   return (
     <div className="w-full">
-      <Form {...form}>
-        <form
-          onSubmit={(e) => {
-            form.handleSubmit(onSubmit)(e);
-          }}
-          className={cn("space-y-5", className)}
-        >
-          <AutoFormObject
-            schema={objectFormSchema}
-            form={form}
-            dependencies={dependencies}
-            fieldConfig={fieldConfig}
-          />
-          {children}
-        </form>
-      </Form>
+      <TooltipProvider delayDuration={150}>
+        <Form {...form}>
+          <form
+            onSubmit={(e) => {
+              form.handleSubmit(onSubmit)(e);
+            }}
+            className={cn("space-y-5", className)}
+          >
+            <AutoFormObject
+              schema={objectFormSchema}
+              form={form}
+              dependencies={dependencies}
+              fieldConfig={fieldConfig}
+            />
+            {children}
+          </form>
+        </Form>
+      </TooltipProvider>
     </div>
   );
 }

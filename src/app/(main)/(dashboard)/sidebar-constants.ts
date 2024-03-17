@@ -9,7 +9,7 @@ import {
 
 export const sidebarData = [
   {
-    hasTopBorder: true,
+    hasTopBorder: false,
     hasBottomBorder: true,
     title: "All projects",
     items: [

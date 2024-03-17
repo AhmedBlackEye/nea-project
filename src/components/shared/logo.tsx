@@ -18,7 +18,7 @@ export default function Logo({ className, link }: LogoProps) {
         viewBox="0 0 38 10"
         xmlns="http://www.w3.org/2000/svg"
         className={cn(
-          "mx-auto h-12 fill-slate-800 dark:fill-primary",
+          "mx-auto h-10 fill-slate-800 dark:fill-primary",
           className,
         )}
       >

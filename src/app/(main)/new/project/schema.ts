@@ -1,12 +1,38 @@
 import { z } from "zod";
 
 export const newProjectSchema = z.object({
-  orgranization: z.string().min(1, "Organization is required"),
-  projectName: z.string().min(1, "Project name is required"),
-  projectSlug: z.string().min(1, "Project slug is required"),
-  emailNewSignups: z.boolean().default(true).optional(),
-  startAtDate: z.date().optional(),
-  endAtDate: z.date().optional(),
+  workspaceName: z.enum(["Personal", "Waitify", "Bervy"]).default("Personal"),
+  projectName: z
+    .string({ required_error: "Workspace name is required" })
+    .describe("Waitlist Name"),
+  projectSlug: z
+    .string({ required_error: "Project slug is required" })
+    .describe("Waitlist Slug"),
+  addCustomDomain: z.object({
+    customDomain: z
+      .union([z.string().url(), z.literal("")])
+      .describe("Custom domain")
+      .optional(),
+  }),
+  startAndEndDate: z
+    .object({
+      startDate: z.coerce
+        .date()
+        .refine((data) => data > new Date(), {
+          message: "Start date must be in the future",
+        })
+        .optional(),
+      endDate: z.coerce.date().optional(),
+    })
+    .describe("hello")
+    .refine(
+      (data) =>
+        !(data?.endDate && data?.startDate) || data.endDate > data.startDate,
+      {
+        message: "End date cannot be earlier than start date.",
+        path: ["endDate"],
+      },
+    ),
 });
 
 export type TNewProjectSchema = z.infer<typeof newProjectSchema>;

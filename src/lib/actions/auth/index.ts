@@ -59,3 +59,7 @@ export async function signOut() {
   const response = await supabase.auth.signOut();
   return response;
 }
+
+export async function serverLog(x: any) {
+  console.log(x);
+}

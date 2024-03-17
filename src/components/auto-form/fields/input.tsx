@@ -28,7 +28,20 @@ export default function AutoFormInput({
           />
         )}
         <FormControl>
-          <Input type={type} {...fieldPropsWithoutShowLabel} />
+          {fieldConfigItem.inputTextLeft ? (
+            <div className="flex">
+              <div className="flex items-center rounded-l-md bg-accent p-2 text-sm font-semibold text-accent-foreground">
+                {fieldConfigItem.inputTextLeft}
+              </div>
+              <Input
+                type={type}
+                className="rounded-l-none"
+                {...fieldPropsWithoutShowLabel}
+              />
+            </div>
+          ) : (
+            <Input type={type} {...fieldPropsWithoutShowLabel} />
+          )}
         </FormControl>
         {fieldConfigItem.description && (
           <FormDescription>{fieldConfigItem.description}</FormDescription>

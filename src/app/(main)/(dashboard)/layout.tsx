@@ -23,7 +23,6 @@ function Layout({ children }: LayoutProps) {
     <div className="flex">
       <Sidebar>
         <SidebarContent>
-          <Logo />
           {sidebarData.map((itemsList, index) => (
             <SidebarList
               key={`sidebar-list-${itemsList.title}-${index}}`}
@@ -62,10 +61,7 @@ function Layout({ children }: LayoutProps) {
         </SidebarFooter>
       </Sidebar>
 
-      <div className="w-full">
-        <AuthorizedNavbar />
-        <div className="p-4 md:p-8 md:pt-6">{children}</div>
-      </div>
+      <div className="w-full p-4 md:p-8 md:pt-6">{children}</div>
     </div>
   );
 }

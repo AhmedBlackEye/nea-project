@@ -12,12 +12,21 @@ const formSchema = z.object({
 export default function NewWorkspaceForm({ close }: { close: () => void }) {
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (
     formData,
-    event,
   ) => {
     close();
   };
   return (
-    <AutoForm formSchema={formSchema} onSubmit={onSubmit}>
+    <AutoForm
+      formSchema={formSchema}
+      onSubmit={onSubmit}
+      fieldConfig={{
+        workspaceName: {
+          inputProps: {
+            placeholder: "Work, hobbies...",
+          },
+        },
+      }}
+    >
       <AutoFormSubmit className="float-end">
         Create a new workspace
       </AutoFormSubmit>

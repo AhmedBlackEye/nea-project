@@ -1,3 +1,4 @@
+import AuthorizedNavbar from "@/components/shared/navigation/authorized-navbar";
 import { createServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -11,7 +12,12 @@ async function Layout({ children }: LayoutProps) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return redirect("/login");
-  return <>{children}</>;
+  return (
+    <>
+      <AuthorizedNavbar />
+      {children}
+    </>
+  );
 }
 
 export default Layout;

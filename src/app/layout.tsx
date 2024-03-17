@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SupabaseUserProvider } from "@/components/providers/supabase-user-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SupabaseUserProvider>{children}</SupabaseUserProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
