@@ -1,3 +1,5 @@
+import NewProjectModal from "@/components/modals/new-project";
+import NewWorkplaceModal from "@/components/modals/new-workplace";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
@@ -7,12 +9,13 @@ function ProjectsPage() {
     <main>
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
-        <Button className="group" variant={"secondary"} asChild>
-          <Link href="/new/project">
-            <PlusCircle className="mr-2 h-5 w-5 " />
-            New project
-          </Link>
-        </Button>
+        <div className="space-x-2 ">
+          <NewProjectModal />
+          {/* <Button variant={"secondary"} asChild>
+            <Link href="/new/project">New workplace</Link>
+          </Button> */}
+          <NewWorkplaceModal />
+        </div>
       </div>
     </main>
   );
