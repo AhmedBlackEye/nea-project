@@ -7,6 +7,7 @@ import {
   boolean,
   bigint,
   integer,
+  index,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -41,50 +42,58 @@ export const products = pgTable("products", {
   metadata: jsonb("metadata"),
 });
 
-export const subscriptions = pgTable("subscriptions", {
-  id: text("id").primaryKey().notNull(),
-  userId: uuid("user_id").notNull(),
-  status: subscriptionStatus("status"),
-  metadata: jsonb("metadata"),
-  priceId: text("price_id").references(() => prices.id),
-  quantity: integer("quantity"),
-  cancelAtPeriodEnd: boolean("cancel_at_period_end"),
-  created: timestamp("created", { withTimezone: true, mode: "string" })
-    .defaultNow()
-    .notNull(),
-  currentPeriodStart: timestamp("current_period_start", {
-    withTimezone: true,
-    mode: "string",
-  })
-    .defaultNow()
-    .notNull(),
-  currentPeriodEnd: timestamp("current_period_end", {
-    withTimezone: true,
-    mode: "string",
-  })
-    .defaultNow()
-    .notNull(),
-  endedAt: timestamp("ended_at", {
-    withTimezone: true,
-    mode: "string",
-  }).defaultNow(),
-  cancelAt: timestamp("cancel_at", {
-    withTimezone: true,
-    mode: "string",
-  }).defaultNow(),
-  canceledAt: timestamp("canceled_at", {
-    withTimezone: true,
-    mode: "string",
-  }).defaultNow(),
-  trialStart: timestamp("trial_start", {
-    withTimezone: true,
-    mode: "string",
-  }).defaultNow(),
-  trialEnd: timestamp("trial_end", {
-    withTimezone: true,
-    mode: "string",
-  }).defaultNow(),
-});
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: text("id").primaryKey().notNull(),
+    userId: uuid("user_id").notNull(),
+    status: subscriptionStatus("status"),
+    metadata: jsonb("metadata"),
+    priceId: text("price_id").references(() => prices.id),
+    quantity: integer("quantity"),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end"),
+    created: timestamp("created", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    currentPeriodStart: timestamp("current_period_start", {
+      withTimezone: true,
+      mode: "string",
+    })
+      .defaultNow()
+      .notNull(),
+    currentPeriodEnd: timestamp("current_period_end", {
+      withTimezone: true,
+      mode: "string",
+    })
+      .defaultNow()
+      .notNull(),
+    endedAt: timestamp("ended_at", {
+      withTimezone: true,
+      mode: "string",
+    }).defaultNow(),
+    cancelAt: timestamp("cancel_at", {
+      withTimezone: true,
+      mode: "string",
+    }).defaultNow(),
+    canceledAt: timestamp("canceled_at", {
+      withTimezone: true,
+      mode: "string",
+    }).defaultNow(),
+    trialStart: timestamp("trial_start", {
+      withTimezone: true,
+      mode: "string",
+    }).defaultNow(),
+    trialEnd: timestamp("trial_end", {
+      withTimezone: true,
+      mode: "string",
+    }).defaultNow(),
+  },
+  (table) => {
+    return {
+      userIdIdx: index("user_id_idx").on(table.userId),
+    };
+  },
+);
 
 export const productsRelations = relations(products, ({ many }) => ({
   prices: many(prices),

@@ -9,4 +9,5 @@ export const campaignAnalytics = pgTable("campaign_analytics", {
   utmSources: jsonb("utm_sources").$type<{ [key: string]: number }>(),
   utmMediums: jsonb("utm_mediums").$type<{ [key: string]: number }>(),
   utmTerms: jsonb("utm_terms").$type<{ [key: string]: number }>(),
+  utmCampaigns: jsonb("utm_campaigns").$type<{ [key: string]: number }>(),
 });

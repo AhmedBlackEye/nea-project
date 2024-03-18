@@ -8,13 +8,15 @@ import {
 import { relations } from "drizzle-orm";
 
 import { invitationStatus } from "./enums";
-import { campaigns } from ".";
+import { campaigns, users } from ".";
 
 export const invitation = pgTable(
   "invitation",
   {
-    email: text("email").notNull(),
-    campaignId: uuid("campaign_id")
+    email: text("email")
+      .notNull()
+      .references(() => users.email),
+    workSpaceId: uuid("campaign_id")
       .notNull()
       .references(() => campaigns.id, { onDelete: "cascade" }),
     status: invitationStatus("status").default("PENDING"),
@@ -25,14 +27,18 @@ export const invitation = pgTable(
   },
   (table) => {
     return {
-      pk: primaryKey({ columns: [table.email, table.campaignId] }),
+      pk: primaryKey({ columns: [table.email, table.workSpaceId] }),
     };
-  }
+  },
 );
 
 export const invitationRelations = relations(invitation, ({ one }) => ({
   campaign: one(campaigns, {
-    fields: [invitation.campaignId],
+    fields: [invitation.workSpaceId],
     references: [campaigns.id],
+  }),
+  email: one(users, {
+    fields: [invitation.email],
+    references: [users.email],
   }),
 }));

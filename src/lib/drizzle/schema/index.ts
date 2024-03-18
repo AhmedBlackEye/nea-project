@@ -1,8 +1,12 @@
 export { users, userRelations } from "./users";
 export { campaigns, campaignsRelations } from "./campaigns";
+export { workspaces, workspacesRelations } from "./workspaces";
 export { invitation, invitationRelations } from "./invitation";
 export { notification, notificationRelations } from "./notification";
-export { userToCampaigns, userToCampaignsRelations } from "./user-to-campaigns";
+export {
+  usersToWorkspaces,
+  usersToWorkspacesRelations,
+} from "./users-to-workspaces";
 export {
   campaignFollowers,
   campaignFollowersRelations,

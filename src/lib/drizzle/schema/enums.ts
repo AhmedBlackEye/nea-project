@@ -22,3 +22,9 @@ export const invitationStatus = pgEnum("invitation_status", [
   "PENDING",
   "REVOKED",
 ]);
+
+export const workspaceRole = pgEnum("workspace_role", [
+  "ADMIN",
+  "USER",
+  "VIEWER",
+]);

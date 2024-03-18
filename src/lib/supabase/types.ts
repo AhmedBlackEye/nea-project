@@ -15,6 +15,7 @@ export type Database = {
           total_offboarded: number | null
           total_referrals: number | null
           total_sign_ups: number | null
+          utm_campaigns: Json | null
           utm_mediums: Json | null
           utm_sources: Json | null
           utm_terms: Json | null
@@ -25,6 +26,7 @@ export type Database = {
           total_offboarded?: number | null
           total_referrals?: number | null
           total_sign_ups?: number | null
+          utm_campaigns?: Json | null
           utm_mediums?: Json | null
           utm_sources?: Json | null
           utm_terms?: Json | null
@@ -35,6 +37,7 @@ export type Database = {
           total_offboarded?: number | null
           total_referrals?: number | null
           total_sign_ups?: number | null
+          utm_campaigns?: Json | null
           utm_mediums?: Json | null
           utm_sources?: Json | null
           utm_terms?: Json | null
@@ -45,6 +48,7 @@ export type Database = {
       campaign_followers: {
         Row: {
           campaign_id: string
+          created_at: string | null
           email: string | null
           first_name: string | null
           id: string
@@ -52,12 +56,16 @@ export type Database = {
           last_name: string | null
           phone: string | null
           rank: number
+          referral_amount: number | null
           referred_by: string | null
           utm_campaign: string | null
+          utm_medium: string | null
           utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           campaign_id: string
+          created_at?: string | null
           email?: string | null
           first_name?: string | null
           id: string
@@ -65,12 +73,16 @@ export type Database = {
           last_name?: string | null
           phone?: string | null
           rank: number
+          referral_amount?: number | null
           referred_by?: string | null
           utm_campaign?: string | null
+          utm_medium?: string | null
           utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           campaign_id?: string
+          created_at?: string | null
           email?: string | null
           first_name?: string | null
           id?: string
@@ -78,9 +90,12 @@ export type Database = {
           last_name?: string | null
           phone?: string | null
           rank?: number
+          referral_amount?: number | null
           referred_by?: string | null
           utm_campaign?: string | null
+          utm_medium?: string | null
           utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: [
           {
@@ -94,44 +109,63 @@ export type Database = {
       }
       campaigns: {
         Row: {
-          analytics: string | null
+          analytics_id: string | null
           answers: Json | null
+          content: string | null
           created_at: string | null
+          custom_url: string | null
           description: string | null
+          ends_at: string | null
           name: string
           project_id: string
           settings: Json | null
           slug: string | null
-          widget_content: string | null
+          starts_at: string | null
+          workspace_id: string | null
         }
         Insert: {
-          analytics?: string | null
+          analytics_id?: string | null
           answers?: Json | null
+          content?: string | null
           created_at?: string | null
+          custom_url?: string | null
           description?: string | null
+          ends_at?: string | null
           name: string
           project_id?: string
           settings?: Json | null
           slug?: string | null
-          widget_content?: string | null
+          starts_at?: string | null
+          workspace_id?: string | null
         }
         Update: {
-          analytics?: string | null
+          analytics_id?: string | null
           answers?: Json | null
+          content?: string | null
           created_at?: string | null
+          custom_url?: string | null
           description?: string | null
+          ends_at?: string | null
           name?: string
           project_id?: string
           settings?: Json | null
           slug?: string | null
-          widget_content?: string | null
+          starts_at?: string | null
+          workspace_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "campaigns_analytics_campaign_analytics_id_fk"
-            columns: ["analytics"]
+            foreignKeyName: "campaigns_analytics_id_campaign_analytics_id_fk"
+            columns: ["analytics_id"]
             isOneToOne: false
             referencedRelation: "campaign_analytics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_workspace_id_workspaces_id_fk"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
             referencedColumns: ["id"]
           }
         ]
@@ -177,6 +211,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "invitation_email_users_email_fk"
+            columns: ["email"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["email"]
           }
         ]
       }
@@ -351,32 +392,32 @@ export type Database = {
           }
         ]
       }
-      user_to_campaigns: {
+      user_to_workspaces: {
         Row: {
           campaign_id: string
-          is_admin: boolean | null
+          role: Database["public"]["Enums"]["workspace_role"]
           user_id: string
         }
         Insert: {
           campaign_id: string
-          is_admin?: boolean | null
+          role: Database["public"]["Enums"]["workspace_role"]
           user_id: string
         }
         Update: {
           campaign_id?: string
-          is_admin?: boolean | null
+          role?: Database["public"]["Enums"]["workspace_role"]
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_to_campaigns_campaign_id_campaigns_project_id_fk"
+            foreignKeyName: "user_to_workspaces_campaign_id_campaigns_project_id_fk"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "user_to_campaigns_user_id_users_id_fk"
+            foreignKeyName: "user_to_workspaces_user_id_users_id_fk"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -414,6 +455,24 @@ export type Database = {
         }
         Relationships: []
       }
+      workspaces: {
+        Row: {
+          description: string
+          id: string
+          name: string
+        }
+        Insert: {
+          description: string
+          id?: string
+          name: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -433,6 +492,7 @@ export type Database = {
         | "incomplete_expired"
         | "past_due"
         | "unpaid"
+      workspace_role: "ADMIN" | "USER" | "VIEWER"
     }
     CompositeTypes: {
       [_ in never]: never

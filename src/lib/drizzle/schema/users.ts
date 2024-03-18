@@ -8,13 +8,13 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-import { invitation, notification, userToCampaigns } from ".";
+import { invitation, notification, subscriptions, usersToWorkspaces } from ".";
 
 export const users = pgTable(
   "users",
   {
     id: uuid("id").primaryKey().notNull(),
-    email: text("email"),
+    email: text("email").unique(),
     fullName: text("full_name"),
     avatarUrl: text("avatar_url"),
     billingAddress: jsonb("billing_address"),
@@ -25,11 +25,15 @@ export const users = pgTable(
     return {
       emailIdx: index("email_idx").on(table.email),
     };
-  }
+  },
 );
 
-export const userRelations = relations(users, ({ many }) => ({
-  userToCampaigns: many(userToCampaigns),
+export const userRelations = relations(users, ({ one, many }) => ({
+  subscriptions: one(subscriptions, {
+    fields: [users.id],
+    references: [subscriptions.userId],
+  }),
+  userToWorkspaces: many(usersToWorkspaces),
   notification: many(notification),
   invitation: many(invitation),
 }));
