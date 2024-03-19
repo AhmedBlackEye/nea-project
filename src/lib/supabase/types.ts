@@ -206,11 +206,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "invitation_campaign_id_campaigns_project_id_fk"
+            foreignKeyName: "invitation_campaign_id_workspaces_id_fk"
             columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["project_id"]
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "invitation_email_users_email_fk"
@@ -457,17 +457,17 @@ export type Database = {
       }
       workspaces: {
         Row: {
-          description: string
+          description: string | null
           id: string
           name: string
         }
         Insert: {
-          description: string
+          description?: string | null
           id?: string
           name: string
         }
         Update: {
-          description?: string
+          description?: string | null
           id?: string
           name?: string
         }

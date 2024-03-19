@@ -18,17 +18,33 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { serverLog } from "@/lib/actions/auth";
 import { toast } from "@/components/ui/use-toast";
+import { createNewCampaign } from "@/lib/queries/campaign";
 
 export default function NewWorkspaceForm() {
   const onSubmit: SubmitHandler<TNewProjectSchema> = async (formData) => {
-    await serverLog(formData);
-    toast({
-      title: "Scheduled: Catch up",
-      description: "Friday, February 10, 2023 at 5:57 PM",
+    const { error } = await createNewCampaign({
+      campaignData: {
+        workspaceId: formData.workspaceName,
+        name: formData.projectName,
+        description: formData.description,
+        slug: formData.projectSlug,
+        customURL: formData.addCustomDomain.customDomain,
+        startsAt: formData.startAndEndDate.startDate?.toISOString(),
+        endsAt: formData.startAndEndDate.endDate?.toISOString(),
+      },
     });
-    console.log(formData);
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: error as string, 
+      });
+    } else {
+      toast({
+        title: "Waitlist created successfully",
+      });
+    }
   };
   return (
     <AutoForm
@@ -46,6 +62,9 @@ export default function NewWorkspaceForm() {
         },
         projectSlug: {
           fieldType: ProjectSlugInput,
+        },
+        description: {
+          fieldType: "textarea",
         },
         addCustomDomain: {
           customDomain: {

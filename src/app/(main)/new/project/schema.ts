@@ -8,6 +8,7 @@ export const newProjectSchema = z.object({
   projectSlug: z
     .string({ required_error: "Project slug is required" })
     .describe("Waitlist Slug"),
+  description: z.string().optional(),
   addCustomDomain: z.object({
     customDomain: z
       .union([z.string().url(), z.literal("")])

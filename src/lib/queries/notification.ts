@@ -4,9 +4,7 @@ import { db } from "../drizzle/db"
 import { notification, notificationRelations } from "../drizzle/schema"
 import { createServerClient } from "../supabase/server"
 
-// export async function saveNotification({description}: {description: string}) {
-//   const response = await db.insert(notification)
-// }
+  const supabase = createServerClient()
 
 type GetNotificationProps = {
   userId: string
