@@ -17,7 +17,9 @@ import { nanoid } from "nanoid";
 export const campaignFollowers = pgTable(
   "campaign_followers",
   {
-    id: char("id", { length: 12 }).$defaultFn(() => nanoid(12)),
+    id: char("id", { length: 12 })
+      .notNull()
+      .$defaultFn(() => nanoid(12)),
     campaignId: uuid("campaign_id")
       .notNull()
       .references(() => campaigns.id, { onDelete: "cascade" }),

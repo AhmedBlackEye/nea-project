@@ -21,7 +21,6 @@ function AutoFormLabel({
   className?: string;
 }) {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  console.log(isTooltipOpen);
   return (
     <FormLabel className={cn("flex items-center gap-1", className)}>
       {label}

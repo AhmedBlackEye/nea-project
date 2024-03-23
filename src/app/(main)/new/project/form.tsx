@@ -21,8 +21,17 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { createNewCampaign } from "@/lib/queries/campaign";
 
-export default function NewWorkspaceForm() {
+type NewWorkspaceFormProps = {
+  workspaceData: {
+    label: string;
+    value: string;
+  }[];
+};
+export default function NewWorkspaceForm({
+  workspaceData,
+}: NewWorkspaceFormProps) {
   const onSubmit: SubmitHandler<TNewProjectSchema> = async (formData) => {
+    console.log("Submitted");
     const { error } = await createNewCampaign({
       campaignData: {
         workspaceId: formData.workspaceName,
@@ -37,8 +46,8 @@ export default function NewWorkspaceForm() {
     if (error) {
       toast({
         variant: "destructive",
-        title: "Something went wrong",
-        description: error as string, 
+        title: "Uh oh! Something went wrong.",
+        description: "Please try again or contact us if the issue presists.",
       });
     } else {
       toast({
@@ -52,7 +61,12 @@ export default function NewWorkspaceForm() {
       onSubmit={onSubmit}
       fieldConfig={{
         workspaceName: {
-          tooltip: "Your project will live inside this workspace",
+          fieldType: "customSelect",
+          selectOptions: workspaceData,
+          tooltip: "Your project will live in here",
+          inputProps: {
+            placeholder: "Select a workspace",
+          },
         },
         projectName: {
           tooltip: "Give a name to your waitlist",
@@ -92,7 +106,7 @@ function ProjectSlugInput({ field }: AutoFormInputComponentProps) {
   const { setValue } = useFormContext();
 
   function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
+    // e.preventDefault();
     setValue("projectSlug", nanoid(11), { shouldValidate: false });
   }
 

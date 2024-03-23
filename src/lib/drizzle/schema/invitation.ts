@@ -13,9 +13,9 @@ import { users, workspaces } from ".";
 export const invitation = pgTable(
   "invitation",
   {
-    email: text("email")
+    userId: uuid("user_id")
       .notNull()
-      .references(() => users.email),
+      .references(() => users.id, { onDelete: "cascade" }),
     workSpaceId: uuid("campaign_id")
       .notNull()
       .references(() => workspaces.id, { onDelete: "cascade" }),
@@ -27,7 +27,7 @@ export const invitation = pgTable(
   },
   (table) => {
     return {
-      pk: primaryKey({ columns: [table.email, table.workSpaceId] }),
+      pk: primaryKey({ columns: [table.userId, table.workSpaceId] }),
     };
   },
 );
@@ -37,8 +37,8 @@ export const invitationRelations = relations(invitation, ({ one }) => ({
     fields: [invitation.workSpaceId],
     references: [workspaces.id],
   }),
-  email: one(users, {
-    fields: [invitation.email],
-    references: [users.email],
+  user: one(users, {
+    fields: [invitation.userId],
+    references: [users.id],
   }),
 }));

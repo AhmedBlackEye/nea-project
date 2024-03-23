@@ -1,11 +1,11 @@
+import { getWorkspaces } from "@/lib/queries/workspaces";
 import {
   ArrowUpRight,
   FileText,
-  Home,
   LayoutPanelLeft,
-  LucideIcon,
   Settings,
 } from "lucide-react";
+
 
 export const sidebarData = [
   {
@@ -30,7 +30,7 @@ export const sidebarData = [
   {
     hasTopBorder: true,
     hasBottomBorder: false,
-    title: "Organistions",
+    title: "Workspaces",
     items: [
       {
         href: "/project/something",

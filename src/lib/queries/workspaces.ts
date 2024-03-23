@@ -1,5 +1,6 @@
 "use server";
 
+import { and, eq } from "drizzle-orm";
 import { db } from "../drizzle/db";
 import { usersToWorkspaces, workspaces } from "../drizzle/schema";
 import { TInsertWorkspace } from "../drizzle/schema/types";
@@ -27,7 +28,8 @@ export async function createNewWorkspace({
     });
     return { error: null };
   } catch (error) {
-    return { error: error };
+    console.log("🔴 Creating workspace ", error);
+    return { error: "Something went wrong" };
   }
 }
 
@@ -35,10 +37,22 @@ export async function getWorkspaces() {
   const user = await getUser();
   if (!user) return { data: null, error: "User not logged in." };
   try {
-    const workspaces = db.query.usersToWorkspaces.findMany({
-      where: (u2w, { eq }) => eq(u2w.userId, user.id),
-    });
-    return { data: workspaces, error: null };
+    const response = await db
+      .select({
+        id: workspaces.id,
+        name: workspaces.name,
+        description: workspaces.description,
+      })
+      .from(workspaces)
+      .innerJoin(
+        usersToWorkspaces,
+        and(
+          eq(usersToWorkspaces.workspaceId, workspaces.id),
+          eq(usersToWorkspaces.userId, user.id),
+        ),
+      );
+
+    return { data: response, error: null };
   } catch (error) {
     return { data: null, error: error };
   }

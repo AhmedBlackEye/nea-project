@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const newProjectSchema = z.object({
-  workspaceName: z.enum(["Personal", "Waitify", "Bervy"]).default("Personal"),
+  workspaceName: z.string({ required_error: "Workspace name is required" }),
   projectName: z
-    .string({ required_error: "Workspace name is required" })
+    .string({ required_error: "Waitlist name is required" })
     .describe("Waitlist Name"),
   projectSlug: z
-    .string({ required_error: "Project slug is required" })
+    .string({ required_error: "Waitlist slug is required" })
     .describe("Waitlist Slug"),
   description: z.string().optional(),
   addCustomDomain: z.object({
@@ -25,7 +25,6 @@ export const newProjectSchema = z.object({
         .optional(),
       endDate: z.coerce.date().optional(),
     })
-    .describe("hello")
     .refine(
       (data) =>
         !(data?.endDate && data?.startDate) || data.endDate > data.startDate,

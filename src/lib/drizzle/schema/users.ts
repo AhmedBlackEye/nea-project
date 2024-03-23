@@ -16,10 +16,7 @@ export const users = pgTable(
     id: uuid("id").primaryKey().notNull(),
     email: text("email").unique(),
     fullName: text("full_name"),
-    avatarUrl: text("avatar_url"),
-    billingAddress: jsonb("billing_address"),
-    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }),
-    paymentMethod: jsonb("payment_method"),
+    avatarUrl: text("avatar_url")
   },
   (table) => {
     return {

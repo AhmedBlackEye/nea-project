@@ -1,7 +1,7 @@
 import { pgTable, uuid, primaryKey } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-import { users, campaigns, workspaces } from ".";
+import { users, workspaces } from ".";
 import { workspaceRole } from "./enums";
 
 export const usersToWorkspaces = pgTable(
@@ -12,7 +12,7 @@ export const usersToWorkspaces = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     workspaceId: uuid("campaign_id")
       .notNull()
-      .references(() => campaigns.id, { onDelete: "cascade" }),
+      .references(() => workspaces.id, { onDelete: "cascade" }),
     role: workspaceRole("role").notNull(),
   },
   (table) => {

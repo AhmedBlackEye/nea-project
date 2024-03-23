@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +21,7 @@ import { loginSchema, TLoginSchema } from "./schema";
 import Link from "next/link";
 import { Shell } from "lucide-react";
 import { useLocalStorage } from "@/hooks";
+import { useState } from "react";
 
 function LoginForm() {
   const [savedEmail, setSavedEmail] = useLocalStorage("Auth_Email", "");
@@ -40,10 +39,8 @@ function LoginForm() {
   });
   const isLoading = form.formState.isSubmitting;
   const [submitError, setSubmitError] = useState("");
-  // const router = useRouter();
   const onSubmit: SubmitHandler<TLoginSchema> = async (formData) => {
     const { error } = await loginUser(formData);
-    // console.log(error);
     if (error) {
       setSubmitError(error.message);
     } else {
@@ -51,7 +48,6 @@ function LoginForm() {
         setSavedEmail(formData.email);
         setSavedPassword(formData.password);
       }
-      // router.replace("/projects");
     }
   };
   return (

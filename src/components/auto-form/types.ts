@@ -5,6 +5,9 @@ import { INPUT_COMPONENTS } from "./config";
 export type FieldConfigItem = {
   description?: string;
   tooltip?: string;
+  inputTextLeft?: string;
+  selectOptions?: { label: string; value: string }[];
+  selectDefault?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> & {
     showLabel?: boolean;
   };

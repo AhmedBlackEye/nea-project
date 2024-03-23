@@ -1,15 +1,15 @@
 "use server";
 
-import { arrayContains, eq, inArray } from "drizzle-orm";
+import { arrayContains, eq, getTableColumns, inArray } from "drizzle-orm";
 import { db } from "../drizzle/db";
 import {
   campaignAnalytics,
   campaigns,
   usersToWorkspaces,
+  workspaces,
 } from "../drizzle/schema";
 import { TInsertCampaign } from "../drizzle/schema/types";
 import { getUser } from "./users";
-import { getWorkspaces } from "./workspaces";
 
 export async function createNewCampaign({
   campaignData,
@@ -24,10 +24,10 @@ export async function createNewCampaign({
         .insert(campaigns)
         .values(campaignData)
         .returning({ campaignId: campaigns.id });
-      // Creating a campaign anlytics row, using the generated
-      await tx.insert(campaignAnalytics).values({
-        campaignId: campaignId,
-      });
+      // // Creating a campaign anlytics row, using the generated
+      // await tx.insert(campaignAnalytics).values({
+      //   campaignId: campaignId,
+      // });
     });
     return { error: null };
   } catch (error) {
@@ -37,10 +37,37 @@ export async function createNewCampaign({
 
 export async function getCampaigns() {
   const user = await getUser();
+  console.error("this is an error");
   if (!user) return { data: null, error: "User not logged in." };
-  const response = await db
-    .select()
-    .from(campaigns)
-    .leftJoin(usersToWorkspaces, eq(usersToWorkspaces.userId, user.id));
-  console.log(response);
+  try {
+    const response = await db
+      .select({
+        workspaceName: workspaces.name,
+        workspaceDescription: workspaces.description,
+        ...getTableColumns(campaigns),
+      })
+      .from(campaigns)
+      .innerJoin(workspaces, eq(workspaces.id, campaigns.workspaceId))
+      .innerJoin(usersToWorkspaces, eq(usersToWorkspaces.userId, user.id));
+    return { data: response, error: null };
+  } catch (error) {
+    return { data: null, error: error };
+  }
 }
+
+// export async function updateCampaignAnalytics({
+//   slug,
+// }: {
+//   campaignid: string;
+// }) {
+//   const user = await getUser();
+//   if (!user) return { data: null, error: "User not logged in." };
+//   try {
+//     const response = db
+//       .update(campaignAnalytics)
+//       .set({})
+//       .where(eq(campaignAnalytics., slug));
+//   } catch (error) {
+//     return { data: null, error: error };
+//   }
+// }
