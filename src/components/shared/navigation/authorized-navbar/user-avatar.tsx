@@ -1,16 +1,13 @@
 import { useUser } from "@/components/providers/supabase-user-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getNameInitials } from "@/lib/utils";
 
 function UserAvatar() {
   const { user } = useUser();
-  const userFullName: string = user?.user_metadata.full_name;
+  const emailInitials = user?.email ? user?.email[0] : "";
   return (
     <Avatar>
       <AvatarImage src={user?.user_metadata.avatar_url} />
-      <AvatarFallback>
-        {userFullName && getNameInitials(userFullName)}
-      </AvatarFallback>
+      <AvatarFallback>{emailInitials}</AvatarFallback>
     </Avatar>
   );
 }

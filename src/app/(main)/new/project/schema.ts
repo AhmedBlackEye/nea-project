@@ -1,3 +1,4 @@
+import { checkIfCampaignSlugExists } from "@/lib/queries/campaign";
 import { z } from "zod";
 
 export const newProjectSchema = z
@@ -7,7 +8,14 @@ export const newProjectSchema = z
     slug: z
       .string()
       .min(1, "Waitlist slug is required")
-      .min(3, "Minimum length is 3"),
+      .min(3, "Minimum length is 3")
+      .refine(
+        async (value) => {
+          const exists = await checkIfCampaignSlugExists(value);
+          return !exists;
+        },
+        { message: "Already exists, try another one." },
+      ),
     description: z.string().optional(),
     customURL: z.union([z.string().url(), z.literal("")]).optional(),
 

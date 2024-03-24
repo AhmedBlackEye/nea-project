@@ -14,7 +14,7 @@ import { workspaces, campaignFollowers, usersToWorkspaces } from ".";
 export const campaigns = pgTable(
   "campaigns",
   {
-    id: uuid("project_id").defaultRandom().primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
     slug: varchar("slug").unique(),
     customURL: varchar("custom_url"),

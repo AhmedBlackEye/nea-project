@@ -100,21 +100,6 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
     form.setValue("slug", slugId);
     setIsGeneratingSlugLoading(false);
   }
-
-  const slugInput = form.watch("slug");
-  useEffect(() => {
-    console.log(slugInput);
-    const handleCheckIfSlugExists = async () => {
-      form.clearErrors("slug");
-      const doesSlugExist: boolean = await checkIfCampaignSlugExists(slugInput);
-      if (doesSlugExist) {
-        form.setError("slug", {
-          message: "Slug already exists please choose another one",
-        });
-      }
-    };
-    handleCheckIfSlugExists();
-  }, [slugInput]);
   return (
     <Form {...form}>
       <form
