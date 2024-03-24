@@ -1,15 +1,15 @@
-"use server"
+"use server";
 
-import { db } from "../drizzle/db"
-import { notification, notificationRelations } from "../drizzle/schema"
-import { createServerClient } from "../supabase/server"
+import { db } from "../drizzle/db";
+import { notification, notificationRelations } from "../drizzle/schema";
+import { createServerClient } from "../supabase/server";
 
-  const supabase = createServerClient()
+const supabase = createServerClient();
 
 type GetNotificationProps = {
-  userId: string
-  isRead?: boolean
-}
+  userId: string;
+  isRead?: boolean;
+};
 
 // export async function getNotification() {
 //   const supabase = createServerClient()

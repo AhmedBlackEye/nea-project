@@ -16,7 +16,7 @@ export const users = pgTable(
     id: uuid("id").primaryKey().notNull(),
     email: text("email").unique(),
     fullName: text("full_name"),
-    avatarUrl: text("avatar_url")
+    avatarUrl: text("avatar_url"),
   },
   (table) => {
     return {

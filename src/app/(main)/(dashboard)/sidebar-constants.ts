@@ -6,7 +6,6 @@ import {
   Settings,
 } from "lucide-react";
 
-
 export const sidebarData = [
   {
     hasTopBorder: false,

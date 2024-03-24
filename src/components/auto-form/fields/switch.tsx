@@ -21,7 +21,7 @@ export default function AutoFormSwitch({
               {...fieldProps}
             />
           </FormControl>
-          <AutoFormLabel label={label}/>
+          <AutoFormLabel label={label} />
         </div>
       </FormItem>
       {fieldConfigItem.description && (
