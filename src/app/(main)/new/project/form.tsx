@@ -2,14 +2,14 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -18,30 +18,33 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { newProjectSchema, TNewProjectSchema } from "./schema";
-import Link from "next/link";
-import { Info, Shell, Shuffle } from "lucide-react";
-import { useLocalStorage } from "@/hooks";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { serverLog } from "@/lib/actions/auth";
+import {
+  checkIfCampaignSlugExists,
+  createNewCampaign,
+} from "@/lib/queries/campaign";
+import { Info, Shell, Shuffle } from "lucide-react";
 import { nanoid } from "nanoid";
+import { use, useEffect, useState } from "react";
+import { TNewProjectSchema, newProjectSchema } from "./schema";
+import { useRouter } from "next/navigation";
 
 type NewWorkspaceFormProps = {
   workspaceData: {
@@ -50,24 +53,68 @@ type NewWorkspaceFormProps = {
   }[];
 };
 function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
-  console.log(workspaceData);
+  const router = useRouter();
   const form = useForm<TNewProjectSchema>({
     resolver: zodResolver(newProjectSchema),
     defaultValues: {
-      workspaceName: "",
-      projectName: "",
-      projectSlug: "",
+      workspaceId: "",
+      name: "",
+      slug: "",
       description: "",
-      customDomain: "",
-      startDate: new Date(),
-      endDate: undefined,
+      customURL: "",
+      startAt: new Date(),
+      endsAt: undefined,
     },
   });
   const isLoading = form.formState.isSubmitting;
   const [submitError, setSubmitError] = useState("");
+  const [isGeneratingSlugLoading, setIsGeneratingSlugLoading] = useState(false);
   const onSubmit: SubmitHandler<TNewProjectSchema> = async (formData) => {
-    console.log("submitted");
+    const { error } = await createNewCampaign({
+      ...formData,
+      startsAt: formData.startAt?.toISOString(), // Convert startAt Date to string
+      endsAt: formData.endsAt?.toISOString(), // Convert endsAt Date to string
+    });
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Please try again or contact us if the issue presists.",
+      });
+    } else {
+      router.replace("/projects");
+      toast({
+        title: "Waitlist created successfully",
+      });
+    }
   };
+  async function handleGenerateSlug(e: any) {
+    setIsGeneratingSlugLoading(true);
+    e.preventDefault();
+    let slugId = "";
+    let doesSlugExist = true;
+    while (doesSlugExist) {
+      slugId = nanoid(11);
+      doesSlugExist = await checkIfCampaignSlugExists(slugId);
+    }
+    form.setValue("slug", slugId);
+    setIsGeneratingSlugLoading(false);
+  }
+
+  const slugInput = form.watch("slug");
+  useEffect(() => {
+    console.log(slugInput);
+    const handleCheckIfSlugExists = async () => {
+      form.clearErrors("slug");
+      const doesSlugExist: boolean = await checkIfCampaignSlugExists(slugInput);
+      if (doesSlugExist) {
+        form.setError("slug", {
+          message: "Slug already exists please choose another one",
+        });
+      }
+    };
+    handleCheckIfSlugExists();
+  }, [slugInput]);
   return (
     <Form {...form}>
       <form
@@ -80,7 +127,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
         <FormField
           control={form.control}
           disabled={isLoading}
-          name="workspaceName"
+          name="workspaceId"
           render={({ field }) => (
             <FormItem>
               <CustomLabel
@@ -108,7 +155,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
         <FormField
           control={form.control}
           disabled={isLoading}
-          name="projectName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Project Name</FormLabel>
@@ -122,7 +169,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
         <FormField
           control={form.control}
           disabled={isLoading}
-          name="projectSlug"
+          name="slug"
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center  justify-between ">
@@ -132,9 +179,17 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
                 />
                 <button
                   className="flex items-center gap-1 text-sm text-primary decoration-2 hover:underline"
-                  onClick={() => form.setValue("projectSlug", nanoid(11))}
+                  onClick={async (e) => await handleGenerateSlug(e)}
                 >
-                  <Shuffle className="h-4 w-4" /> Randomize
+                  {isGeneratingSlugLoading ? (
+                    <>
+                      <Shell className="h-4 w-4 animate-spin" /> Generating
+                    </>
+                  ) : (
+                    <>
+                      <Shuffle className="h-4 w-4" /> Randomize
+                    </>
+                  )}
                 </button>
               </div>
               <FormControl>
@@ -174,7 +229,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
               <FormField
                 control={form.control}
                 disabled={isLoading}
-                name="customDomain"
+                name="customURL"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Custom domain</FormLabel>
@@ -189,7 +244,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
                 <FormField
                   control={form.control}
                   disabled={isLoading}
-                  name="startDate"
+                  name="startAt"
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>Start Date</FormLabel>
@@ -207,7 +262,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
                 <FormField
                   control={form.control}
                   disabled={isLoading}
-                  name="endDate"
+                  name="endsAt"
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>End Date</FormLabel>

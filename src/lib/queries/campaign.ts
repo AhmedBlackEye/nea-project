@@ -11,11 +11,7 @@ import {
 import { TInsertCampaign } from "../drizzle/schema/types";
 import { getUser } from "./users";
 
-export async function createNewCampaign({
-  campaignData,
-}: {
-  campaignData: TInsertCampaign;
-}) {
+export async function createNewCampaign(campaignData: TInsertCampaign) {
   const user = await getUser();
   if (!user) return { error: "User not logged in." };
   try {
@@ -24,10 +20,6 @@ export async function createNewCampaign({
         .insert(campaigns)
         .values(campaignData)
         .returning({ campaignId: campaigns.id });
-      // // Creating a campaign anlytics row, using the generated
-      // await tx.insert(campaignAnalytics).values({
-      //   campaignId: campaignId,
-      // });
     });
     return { error: null };
   } catch (error) {
@@ -38,7 +30,6 @@ export async function createNewCampaign({
 
 export async function getCampaigns() {
   const user = await getUser();
-  console.error("this is an error");
   if (!user) return { data: null, error: "User not logged in." };
   try {
     const response = await db
@@ -54,5 +45,19 @@ export async function getCampaigns() {
   } catch (error) {
     console.log("🔴 Error getting campaigns: ", error);
     return { data: null, error: "Something went wrong" };
+  }
+}
+
+export async function checkIfCampaignSlugExists(slug: string) {
+  try {
+    const response = await db
+      .select()
+      .from(campaigns)
+      .where(eq(campaigns.slug, slug));
+
+    return !!response?.length;
+  } catch (error) {
+    console.log("🔴 Error at checking if campaign exist: ", error);
+    return true;
   }
 }

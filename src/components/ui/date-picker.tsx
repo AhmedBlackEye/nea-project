@@ -38,7 +38,7 @@ export const DatePicker = forwardRef<
           mode="single"
           selected={date}
           onSelect={setDate}
-          disabled={{ before: today }}
+          disabled={{ before: new Date() }}
           initialFocus
         />
       </PopoverContent>

@@ -2,26 +2,23 @@ import { z } from "zod";
 
 export const newProjectSchema = z
   .object({
-    workspaceName: z.string().min(1, "Workspace name is required"),
-    projectName: z.string().min(1, "Waitlist name is required"),
-    projectSlug: z.string().min(1, "Waitlist slug is required"),
+    workspaceId: z.string().min(1, "Workspace name is required"),
+    name: z.string().min(1, "Waitlist name is required"),
+    slug: z
+      .string()
+      .min(1, "Waitlist slug is required")
+      .min(3, "Minimum length is 3"),
     description: z.string().optional(),
-    customDomain: z.string().url().describe("Custom domain").optional(),
+    customURL: z.union([z.string().url(), z.literal("")]).optional(),
 
-    startDate: z.coerce
-      .date()
-      .refine((data) => data > new Date(), {
-        message: "Start date must be in the future",
-      })
-      .optional(),
-    endDate: z.coerce.date().optional(),
+    startAt: z.coerce.date().optional(),
+    endsAt: z.coerce.date().optional(),
   })
   .refine(
-    (data) =>
-      !(data?.endDate && data?.startDate) || data.endDate > data.startDate,
+    (data) => !(data?.endsAt && data?.startAt) || data.endsAt > data.startAt,
     {
       message: "End date cannot be earlier than start date.",
-      path: ["endDate"],
+      path: ["endsAt"],
     },
   );
 
