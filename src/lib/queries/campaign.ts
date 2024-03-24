@@ -31,7 +31,8 @@ export async function createNewCampaign({
     });
     return { error: null };
   } catch (error) {
-    return { error: error };
+    console.log("🔴 Creating campaign: ", error);
+    return { error: "Something went wrong" };
   }
 }
 
@@ -51,23 +52,7 @@ export async function getCampaigns() {
       .innerJoin(usersToWorkspaces, eq(usersToWorkspaces.userId, user.id));
     return { data: response, error: null };
   } catch (error) {
-    return { data: null, error: error };
+    console.log("🔴 Error getting campaigns: ", error);
+    return { data: null, error: "Something went wrong" };
   }
 }
-
-// export async function updateCampaignAnalytics({
-//   slug,
-// }: {
-//   campaignid: string;
-// }) {
-//   const user = await getUser();
-//   if (!user) return { data: null, error: "User not logged in." };
-//   try {
-//     const response = db
-//       .update(campaignAnalytics)
-//       .set({})
-//       .where(eq(campaignAnalytics., slug));
-//   } catch (error) {
-//     return { data: null, error: error };
-//   }
-// }
