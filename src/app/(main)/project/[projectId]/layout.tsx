@@ -1,65 +1,13 @@
-"use client";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarItem,
-  SidebarList,
-} from "@/components/shared/navigation/sidebar";
-import { usePathname } from "next/navigation";
-import { getSidebarData, getSidebarFooter } from "./sidebar-data";
-import UpgradeSubscriptionBtn from "@/components/shared/buttons/upgrade-subscription";
+import ProjectSidebar from "@/components/shared/navigation/sidebar/project";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 function Layout({ children }: LayoutProps) {
-  const url = usePathname();
-  console.log(url);
   return (
     <div className="flex">
-      <Sidebar>
-        <SidebarContent>
-          {getSidebarData("some").map((itemsList, index) => (
-            <SidebarList
-              key={`sidebar-list-${itemsList.title}-${index}}`}
-              showTopSeparator={itemsList.hasTopBorder}
-              showBottomSeparator={itemsList.hasBottomBorder}
-              title={itemsList.title}
-            >
-              {itemsList.items.map((item, index) => (
-                <SidebarItem
-                  key={`sidebar-item-${item.title}-${index}`}
-                  title={item.title}
-                  href={item.href}
-                  label={item.label}
-                  Icon={item.Icon}
-                  isActive={item.href === url}
-                />
-              ))}
-            </SidebarList>
-          ))}
-        </SidebarContent>
-
-        <SidebarFooter>
-          <UpgradeSubscriptionBtn />
-          <SidebarList showTopSeparator>
-            {getSidebarFooter().map((item) => (
-              <SidebarItem
-                key={item.title}
-                title={item.title}
-                href={item.href}
-                label={item.label}
-                Icon={item.Icon}
-                isActive={item.href === url}
-              />
-            ))}
-          </SidebarList>
-        </SidebarFooter>
-      </Sidebar>
-
+      <ProjectSidebar />
       <div className="w-full p-4 md:p-8 md:pt-6">{children}</div>
     </div>
   );
