@@ -1,5 +1,5 @@
-import { getWorkspaces } from "@/lib/queries/workspaces";
 import {
+  ClipboardList,
   FileText,
   Home,
   LayoutPanelLeft,
@@ -31,7 +31,7 @@ export function getSidebarData(id: string) {
           href: `/project/${id}/Waitlists`,
           title: "Waitlists",
           label: "",
-          Icon: Table,
+          Icon: ClipboardList,
         },
         {
           href: `/project/${id}/settings`,
