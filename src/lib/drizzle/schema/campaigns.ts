@@ -10,6 +10,7 @@ import {
 import { relations } from "drizzle-orm";
 
 import { workspaces, campaignFollowers, usersToWorkspaces } from ".";
+import { WidgetContent } from "@/types/widget";
 
 export const campaigns = pgTable(
   "campaigns",
@@ -19,7 +20,7 @@ export const campaigns = pgTable(
     slug: varchar("slug").unique(),
     customURL: varchar("custom_url"),
     description: text("description"),
-    content: text("content").default(""),
+    content: jsonb("content").default({}).$type<WidgetContent>(),
     workspaceId: uuid("workspace_id").references(() => workspaces.id),
     answers: jsonb("answers").default({}),
     settings: jsonb("settings").default({}),

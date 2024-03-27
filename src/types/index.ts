@@ -1,4 +1,4 @@
-import { TCampaign } from "./drizzle/schema/types";
+import { TCampaign } from "../lib/drizzle/schema/types";
 
 export type TCampaignWithWorkspace = TCampaign & {
   workspaceId: string;

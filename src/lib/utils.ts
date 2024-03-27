@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { TCampaignWithWorkspace, TOrganizedWorksapces } from "./types";
+import { TCampaignWithWorkspace, TOrganizedWorksapces } from "../types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,3 +36,10 @@ export function groupCampaignsUsingWorkspace(
 
   return Array.from(workspaceMap.values());
 }
+
+// export function getClassName(
+//   obj: { color: string; backgroundColor: string } | undefined,
+// ): string {
+//   if (!obj) return "";
+//   return obj.values().join(" ");
+// }

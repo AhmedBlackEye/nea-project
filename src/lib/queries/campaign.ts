@@ -8,9 +8,9 @@ import {
   usersToWorkspaces,
   workspaces,
 } from "../drizzle/schema";
-import { TInsertCampaign } from "../drizzle/schema/types";
+import { TCampaign, TInsertCampaign } from "../drizzle/schema/types";
 import { getUser } from "./users";
-import { TCampaignWithWorkspace } from "../types";
+import { TCampaignWithWorkspace } from "../../types";
 
 export async function createNewCampaign(campaignData: TInsertCampaign) {
   const user = await getUser();
@@ -61,4 +61,12 @@ export async function checkIfCampaignSlugExists(slug: string) {
     console.log("🔴 Error at checking if campaign exist: ", error);
     return true;
   }
+}
+export async function getCampaignData(
+  campaignId: string,
+): Promise<TCampaign | undefined> {
+  const response = await db.query.campaigns.findFirst({
+    where: eq(campaigns.id, campaignId),
+  });
+  return response;
 }
