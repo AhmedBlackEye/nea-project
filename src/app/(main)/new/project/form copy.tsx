@@ -99,6 +99,14 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
     form.setValue("slug", slugId);
     setIsGeneratingSlugLoading(false);
   }
+  async function handleCheckIfSlugIsUnique() {
+    const currentSlug = form.getValues("slug")
+    if (currentSlug.length > 3) {
+      const exists = await checkIfCampaignSlugExists(currentSlug);
+      if(exists) form.setError("slug", {message: "Slug needs to be unique"})
+
+    }
+  }
   return (
     <Form {...form}>
       <form
@@ -184,6 +192,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
                   <Input
                     className="rounded-l-none"
                     placeholder="my_waitlist"
+                    onChange={handleCheckIfSlugIsUnique}
                     {...field}
                   />
                 </div>
@@ -275,6 +284,7 @@ function NewCampaignForm({ workspaceData }: NewWorkspaceFormProps) {
 }
 
 export default NewCampaignForm;
+
 
 function CustomLabel({
   label,

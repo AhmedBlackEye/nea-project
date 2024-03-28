@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function UserAvatar() {
   const { user } = useUser();
+  // console.log("from avatar", user);
   const emailInitials = user?.email ? user?.email[0] : "";
   return (
     <Avatar>

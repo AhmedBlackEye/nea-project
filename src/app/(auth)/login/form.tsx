@@ -82,7 +82,7 @@ function LoginForm() {
               <div className="flex items-center  justify-between ">
                 <FormLabel>Password</FormLabel>
                 <Link
-                  href="/reset-password"
+                  href="/forgot-password"
                   className="text-sm text-primary decoration-2 hover:underline"
                 >
                   Forgot password?

@@ -13,9 +13,7 @@ export function getNameInitials(fullName: string, joinWith = "") {
     .join(joinWith);
 }
 
-export function groupCampaignsUsingWorkspace(
-  campaignArray: TCampaignWithWorkspace[],
-) {
+export function groupCampaignsUsingWorkspace(campaignArray: any[]) {
   const workspaceMap = new Map<string, TOrganizedWorksapces>();
 
   for (const campaignObj of campaignArray) {

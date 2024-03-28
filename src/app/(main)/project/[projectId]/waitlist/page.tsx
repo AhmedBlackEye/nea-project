@@ -15,6 +15,7 @@ async function ProjectWaitlisttPage() {
           <WidgetDesignSettings />
         </div>
       </EditorProvider> */}
+      <div>hello</div>
     </main>
   );
 }
